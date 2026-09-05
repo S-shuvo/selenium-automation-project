@@ -1,0 +1,26 @@
+package com.sol.pages;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+public class LoginPage extends BasePage {
+    public LoginPage(WebDriver driver)
+    {
+        super(driver);
+    }
+    public void login(String username, String password){
+        driver.findElement(By.name("username")).sendKeys(username);
+        driver.findElement(By.name("password")).sendKeys(password);
+        driver.findElement(By.xpath("//input[@value='Login']")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[@class='page-title-bar']")));
+
+        try{
+            Thread.sleep(5000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+}
