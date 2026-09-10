@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BrowserFactory {
-    public static WebDriver createDriver() {
+    public static WebDriver createDriver(){
         String browser = ConfigReader.get("browser");
         WebDriver driver;
         if(browser.equalsIgnoreCase("chrome")){
@@ -13,9 +13,8 @@ public class BrowserFactory {
         } else if(browser.equalsIgnoreCase("firefox")){
             driver = new FirefoxDriver();
         } else{
-            throw new RuntimeException("Invalid browser" + browser);
+            throw new RuntimeException("Browser not supported" + browser);
         }
-
         driver.manage().window().maximize();
         return driver;
     }
