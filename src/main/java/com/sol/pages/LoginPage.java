@@ -1,26 +1,62 @@
 package com.sol.pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
-    public LoginPage(WebDriver driver)
-    {
+
+    public LoginPage(WebDriver driver) {
         super(driver);
     }
-    public void login(String username, String password){
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
-        driver.findElement(By.xpath("//input[@value='Login']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated
-                (By.xpath("//div[@class='page-title-bar']")));
+    // =========================================================
+    // LOCATORS
+    // =========================================================
 
-        try{
-            Thread.sleep(5000);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+    private By usernameField =
+            By.name("username");
+
+    private By passwordField =
+            By.name("password");
+
+    private By loginButton =
+            By.xpath("//input[@value='Login']");
+
+    // Dashboard / logged-in page indicator
+    private By dashboardElement =
+            By.xpath("//div[@class='page-title-bar']");
+
+
+    // =========================================================
+    // LOGIN
+    // =========================================================
+
+    public void login(String username, String password) {
+
+        // Username
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(usernameField)
+        ).sendKeys(username);
+
+
+        // Password
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(passwordField)
+        ).sendKeys(password);
+
+
+        // Login
+        wait.until(
+                ExpectedConditions.elementToBeClickable(loginButton)
+        ).click();
+
+
+        // Wait until dashboard/home page is loaded
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(dashboardElement)
+        );
+
+        System.out.println("Dashboard loaded successfully.");
     }
 }
