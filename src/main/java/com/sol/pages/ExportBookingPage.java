@@ -31,6 +31,11 @@ public class ExportBookingPage extends BasePage {
     private By keyAccountSearchInput =
             By.cssSelector(".select2-container--open .select2-search__field");
 
+    // Key Account - Autocomplete Options
+    private By keyAccountOptions =
+            By.cssSelector(
+                    ".select2-container--open li.select2-results__option"
+            );
     // Freight Term
     private By freightTermDropdown =
             By.xpath("//select[option[normalize-space()='CIP']]");
@@ -39,21 +44,34 @@ public class ExportBookingPage extends BasePage {
     private By shipperField =
             By.xpath("//input[contains(@name,'shipper') or contains(@id,'shipper')]");
 
+    // Shipper - Autocomplete Options
+    private By shipperOptions =
+            By.xpath(
+                    "//ul[contains(@class,'ui-menu')]" +
+                            "//div[contains(@class,'ui-menu-item-wrapper')]"
+            );
+
     // Shipper Title
     private By shipperTitleField =
             By.xpath("//input[contains(@name,'shipperTitle') or contains(@id,'shipperTitle')]");
 
     // Email
     private By emailField =
-            By.xpath("//input[@type='email' or contains(@name,'email')]");
+            By.xpath("//input[@type='shipperEmail' or contains(@name,'shipperEmail')]");
 
     // Shipper Bank Name
     private By shipperBankNameField =
-            By.xpath("//input[contains(@name,'shipperBank') or contains(@id,'shipperBank')]");
+            By.xpath("//input[contains(@name,'shipperBankName') or contains(@id,'shipperBankName')]");
 
     // Consignee
     private By consigneeField =
             By.xpath("//input[contains(@name,'consignee') or contains(@id,'consignee')]");
+
+    private By autocomplete =
+            By.xpath("//ul[contains(@class,'ui-menu') and " +
+                    "not(contains(@style, 'display: none'))]" +
+                    "//div[contains(@class,'ui-menu-item-wrapper')]"
+            );
 
     // Buying House
     private By buyingHouseField =
@@ -73,19 +91,19 @@ public class ExportBookingPage extends BasePage {
 
     // Second Notify Party
     private By secondNotifyPartyField =
-            By.xpath("//input[contains(@name,'secondNotify') or contains(@id,'secondNotify')]");
+            By.xpath("//input[contains(@name,'secondNotify') or contains(@id,'secondNotifyName')]");
 
     // Second Notify Party Address
     private By secondNotifyAddressField =
-            By.xpath("//textarea[contains(@name,'secondNotify') or contains(@id,'secondNotify')]");
+            By.xpath("//textarea[contains(@name,'secondNotify') or contains(@id,'secondNotifyAddress')]");
 
     // Agent checkbox
     private By loadAllAgentCheckbox =
-            By.xpath("//input[@type='checkbox' and following-sibling::text()[contains(.,'Load All Agent')]]");
+            By.xpath("//input[@type='checkbox' and following-sibling::text()[contains(.,'loadAllAgent')]]");
 
     // Agent
     private By agentField =
-            By.xpath("//input[contains(@name,'agent') or contains(@id,'agent')]");
+            By.xpath("//input[contains(@name,'agent') or contains(@id,'agentName')]");
 
     // CNF Agent
     private By cnfAgentDropdown =
@@ -232,7 +250,7 @@ public class ExportBookingPage extends BasePage {
                 )
         );
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(keyAccountOptions);
 
         System.out.println(
                 "Selected KeyAccount : " +
@@ -241,12 +259,7 @@ public class ExportBookingPage extends BasePage {
     }
 
 
-    private void selectRandomAutocompleteOption() {
-
-        By optionsLocator =
-                By.cssSelector(
-                        ".select2-container--open li.select2-results__option"
-                );
+    private void selectRandomAutocompleteOption(By optionsLocator) {
 
         // Actual database result আসা পর্যন্ত wait
         wait.until(driver -> {
@@ -257,17 +270,22 @@ public class ExportBookingPage extends BasePage {
             return options.stream()
                     .anyMatch(option -> {
 
-                        String text = option.getText().trim();
+                        String text =
+                                option.getText().trim();
 
                         return !text.isEmpty()
                                 && !text.equalsIgnoreCase("Searching…")
                                 && !text.equalsIgnoreCase("Searching...")
-                                && !text.equalsIgnoreCase("Please enter 1 or more characters")
-                                && !text.equalsIgnoreCase("-- Select One --");
+                                && !text.equalsIgnoreCase(
+                                "Please enter 1 or more characters"
+                        )
+                                && !text.equalsIgnoreCase(
+                                "-- Select One --"
+                        );
                     });
         });
 
-        // Actual options collect
+        // Actual valid options collect
         List<WebElement> options =
                 driver.findElements(optionsLocator);
 
@@ -290,28 +308,32 @@ public class ExportBookingPage extends BasePage {
                         })
                         .toList();
 
+        // যদি কোনো valid data না আসে
         if (validOptions.isEmpty()) {
             throw new RuntimeException(
-                    "No Key Account data loaded from database!"
+                    "No autocomplete data loaded from database!"
             );
         }
 
+        // Random option select
         int randomIndex =
                 new Random().nextInt(validOptions.size());
 
         WebElement selectedOption =
                 validOptions.get(randomIndex);
 
+        // Console output
         System.out.println(
                 "Total Loaded Options : " +
                         validOptions.size()
         );
 
         System.out.println(
-                "Selected Key Account : " +
+                "Selected Option : " +
                         selectedOption.getText()
         );
 
+        // Select random option
         selectedOption.click();
     }
 
@@ -329,7 +351,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(shipperOptions);
     }
 
 
@@ -374,7 +396,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -389,7 +411,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -414,14 +436,6 @@ public class ExportBookingPage extends BasePage {
         if (!checkbox.isSelected()) {
             checkbox.click();
         }
-
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(firstNotifyNameField));
-
-        field.click();
-        field.sendKeys(" ");
-
-        selectRandomAutocompleteOption();
     }
 
 
@@ -446,7 +460,7 @@ public class ExportBookingPage extends BasePage {
 
 
     /**
-     * Agent
+     * Agent (!from here!!!!!!!!!!!!!!)
      */
     public void selectRandomAgent() {
 
@@ -463,7 +477,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -487,7 +501,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys("A");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -540,7 +554,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -555,7 +569,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
@@ -586,7 +600,7 @@ public class ExportBookingPage extends BasePage {
         field.click();
         field.sendKeys(" ");
 
-        selectRandomAutocompleteOption();
+        selectRandomAutocompleteOption(autocomplete);
     }
 
 
