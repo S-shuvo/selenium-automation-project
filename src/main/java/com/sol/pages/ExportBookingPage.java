@@ -55,13 +55,17 @@ public class ExportBookingPage extends BasePage {
     private By shipperTitleField =
             By.xpath("//input[contains(@name,'shipperTitle') or contains(@id,'shipperTitle')]");
 
-    // Email
+    // Shipper Email
     private By emailField =
             By.xpath("//input[@type='shipperEmail' or contains(@name,'shipperEmail')]");
 
     // Shipper Bank Name
     private By shipperBankNameField =
             By.xpath("//input[contains(@name,'shipperBankName') or contains(@id,'shipperBankName')]");
+
+    // Shipper Bank Address
+    private By shipperBankAddress =
+            By.xpath("//textarea[contains(@name,'shipperBankAddress') or contains(@id,'shipperBankAddress')]");
 
     // Consignee
     private By consigneeField =
@@ -72,6 +76,15 @@ public class ExportBookingPage extends BasePage {
                     "not(contains(@style, 'display: none'))]" +
                     "//div[contains(@class,'ui-menu-item-wrapper')]"
             );
+
+    // Consignee Bank Name
+    private By consigneeBankNameField =
+            By.xpath("//input[contains(@name,'consigneeBankName') or contains(@id,'consigneeBankName')]");
+
+    // Consignee Bank Address
+    private By consigneeBankAddress =
+            By.xpath("//textarea[contains(@name,'consigneeBankAddress') or contains(@id,'consigneeBankAddress')]");
+
 
     // Buying House
     private By buyingHouseField =
@@ -99,7 +112,7 @@ public class ExportBookingPage extends BasePage {
 
     // Agent checkbox
     private By loadAllAgentCheckbox =
-            By.xpath("//input[@type='checkbox' and following-sibling::text()[contains(.,'loadAllAgent')]]");
+            By.id("loadAllAgent");
 
     // Agent
     private By agentField =
@@ -109,9 +122,19 @@ public class ExportBookingPage extends BasePage {
     private By cnfAgentDropdown =
             By.xpath("//select[contains(@name,'cnf') or contains(@id,'cnf')]");
 
-    // Commodity Type
+    //Commodity Type field
     private By commodityTypeField =
-            By.xpath("//input[contains(@name,'commodity') or contains(@id,'commodity')]");
+            By.cssSelector("#select2-commodityTypeId-container");
+
+    //Commodity search field
+    private By commoditySearchInput =
+            By.cssSelector(
+                    ".select2-container--open .select2-search__field"
+            );
+
+    //commodity options
+    private By commodityOptions = By.cssSelector("li.select2-results__option");
+
 
     // Commercial Invoice No
     private By commercialInvoiceNoField =
@@ -119,11 +142,11 @@ public class ExportBookingPage extends BasePage {
 
     // Agreement Type
     private By agreementTypeDropdown =
-            By.xpath("//select[contains(@name,'agreement') or contains(@id,'agreement')]");
+            By.xpath("//select[contains(@name,'paymentMode.id') or contains(@id,'paymentModeId')]");
 
     // Exp Ref No
     private By expRefNoField =
-            By.xpath("//input[contains(@name,'expRef') or contains(@id,'expRef')]");
+            By.xpath("//input[contains(@name,'expNo') or contains(@id,'expNo')]");
 
     // Origin Country
     private By originCountryDropdown =
@@ -155,15 +178,15 @@ public class ExportBookingPage extends BasePage {
 
     // Description of Goods
     private By descriptionGoodsField =
-            By.xpath("//textarea[contains(@name,'description') or contains(@id,'description')]");
+            By.xpath("//textarea[contains(@name,'descriptionOfGoodsId') or contains(@id,'descriptionOfGoodsId')]");
 
     // Remarks
     private By remarksField =
-            By.xpath("//textarea[contains(@name,'remarks') or contains(@id,'remarks')]");
+            By.xpath("//textarea[contains(@name,'remarksId') or contains(@id,'remarksId')]");
 
     // Reference No
     private By referenceNoField =
-            By.xpath("//input[contains(@name,'reference') or contains(@id,'reference')]");
+            By.xpath("//input[contains(@name,'reffNoId') or contains(@id,'reffNoId')]");
 
     // NRI
     private By nriDropdown =
@@ -338,8 +361,6 @@ public class ExportBookingPage extends BasePage {
     }
 
 
-
-
     /**
      * Shipper
      */
@@ -384,6 +405,15 @@ public class ExportBookingPage extends BasePage {
                 .sendKeys("Test HSBC");
     }
 
+    /**
+     * Shipper Bank Address
+     */
+    public void enterShipperBankAddress() {
+
+        driver.findElement(shipperBankAddress)
+                .sendKeys("HSBC Gulshan");
+    }
+
 
     /**
      * Consignee
@@ -399,276 +429,309 @@ public class ExportBookingPage extends BasePage {
         selectRandomAutocompleteOption(autocomplete);
     }
 
-
     /**
-     * Buying House
+     * Consignee Bank Name
      */
-    public void selectRandomBuyingHouse() {
+    public void enterConsigneeBankName() {
 
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(buyingHouseField));
-
-        field.click();
-        field.sendKeys(" ");
-
-        selectRandomAutocompleteOption(autocomplete);
+        driver.findElement(consigneeBankNameField)
+                .sendKeys("Test SCB");
     }
 
-
     /**
-     * Buying House Title
+     * Consignee Bank Address
      */
-    public void enterBuyingHouseTitle() {
+    public void enterConsigneeBankAddress() {
 
-        driver.findElement(buyingHouseTitleField)
-                .sendKeys("Test Buying House Title");
+        driver.findElement(consigneeBankAddress)
+                .sendKeys("SCB Gulshan");
+
     }
+        /**
+         * Buying House
+         */
+        public void selectRandomBuyingHouse () {
 
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(buyingHouseField));
 
-    /**
-     * First Notify Party
-     */
-    public void selectRandomFirstNotifyParty() {
+            field.click();
+            field.sendKeys(" ");
 
-        WebElement checkbox =
-                driver.findElement(sameAsConsigneeCheckbox);
-
-        if (!checkbox.isSelected()) {
-            checkbox.click();
-        }
-    }
-
-
-    /**
-     * Second Notify Party
-     */
-    public void enterSecondNotifyParty() {
-
-        driver.findElement(secondNotifyPartyField)
-                .sendKeys("Test Second Notify party");
-    }
-
-
-    /**
-     * Second Notify Party Address
-     */
-    public void enterSecondNotifyPartyAddress() {
-
-        driver.findElement(secondNotifyAddressField)
-                .sendKeys("Test Second Notify Party Address");
-    }
-
-
-    /**
-     * Agent (!from here!!!!!!!!!!!!!!)
-     */
-    public void selectRandomAgent() {
-
-        WebElement checkbox =
-                driver.findElement(loadAllAgentCheckbox);
-
-        if (!checkbox.isSelected()) {
-            checkbox.click();
+            selectRandomAutocompleteOption(autocomplete);
         }
 
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(agentField));
 
-        field.click();
-        field.sendKeys(" ");
+        /**
+         * Buying House Title
+         */
+        public void enterBuyingHouseTitle () {
 
-        selectRandomAutocompleteOption(autocomplete);
-    }
-
-
-    /**
-     * CNF Agent
-     */
-    public void selectRandomCnfAgent() {
-
-        selectRandomDropdown(cnfAgentDropdown);
-    }
-
-
-    /**
-     * Commodity Type
-     */
-    public void selectRandomCommodityType() {
-
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(commodityTypeField));
-
-        field.click();
-        field.sendKeys("A");
-
-        selectRandomAutocompleteOption(autocomplete);
-    }
-
-
-    /**
-     * Commercial Invoice No
-     */
-    public void enterCommercialInvoiceNo() {
-
-        driver.findElement(commercialInvoiceNoField)
-                .sendKeys("CMCLTST009");
-    }
-
-
-    /**
-     * Agreement Type
-     */
-    public void selectRandomAgreementType() {
-
-        selectRandomDropdown(agreementTypeDropdown);
-    }
-
-
-    /**
-     * Exp Ref No
-     */
-    public void enterExpRefNo() {
-
-        driver.findElement(expRefNoField)
-                .sendKeys("EXPRF55");
-    }
-
-
-    /**
-     * Origin Country
-     */
-    public void selectRandomOriginCountry() {
-
-        selectRandomDropdown(originCountryDropdown);
-    }
-
-
-    /**
-     * Origin Receive
-     */
-    public void selectRandomOriginReceive() {
-
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(originReceiveField));
-
-        field.click();
-        field.sendKeys(" ");
-
-        selectRandomAutocompleteOption(autocomplete);
-    }
-
-
-    /**
-     * Load Port
-     */
-    public void selectRandomLoadPort() {
-
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(loadPortField));
-
-        field.click();
-        field.sendKeys(" ");
-
-        selectRandomAutocompleteOption(autocomplete);
-    }
-
-
-    /**
-     * Destination Country
-     */
-    public void selectRandomDestinationCountry() {
-
-        selectRandomDropdown(destinationCountryDropdown);
-    }
-
-
-    /**
-     * Destination / Discharge Port
-     */
-    public void selectRandomDischargePort() {
-
-        WebElement checkbox =
-                driver.findElement(loadAllPortCheckbox);
-
-        if (!checkbox.isSelected()) {
-            checkbox.click();
+            driver.findElement(buyingHouseTitleField)
+                    .sendKeys("Test Buying House Title");
         }
 
-        WebElement field =
-                wait.until(ExpectedConditions.elementToBeClickable(dischargePortField));
 
-        field.click();
-        field.sendKeys(" ");
+        /**
+         * First Notify Party
+         */
+        public void selectRandomFirstNotifyParty () {
 
-        selectRandomAutocompleteOption(autocomplete);
+            WebElement checkbox =
+                    driver.findElement(sameAsConsigneeCheckbox);
+
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+        }
+
+
+        /**
+         * Second Notify Party
+         */
+        public void enterSecondNotifyParty () {
+
+            driver.findElement(secondNotifyPartyField)
+                    .sendKeys("Test Second Notify party");
+        }
+
+
+        /**
+         * Second Notify Party Address
+         */
+        public void enterSecondNotifyPartyAddress () {
+
+            driver.findElement(secondNotifyAddressField)
+                    .sendKeys("Test Second Notify Party Address");
+        }
+
+
+        /**
+         * Agent (!from here!!!!!!!!!!!!!!)
+         */
+        public void selectRandomAgent () {
+
+            WebElement checkbox =
+                    driver.findElement(loadAllAgentCheckbox);
+
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(agentField));
+
+            field.click();
+            field.sendKeys(" ");
+
+            selectRandomAutocompleteOption(autocomplete);
+        }
+
+
+        /**
+         * CNF Agent
+         */
+        public void selectRandomCnfAgent () {
+
+            selectRandomDropdown(cnfAgentDropdown);
+        }
+
+
+        /**
+         * Commodity Type
+         */
+        public void selectRandomCommodityType() {
+
+            // Commodity Type dropdown open
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(
+                            commodityTypeField
+                    ));
+
+            field.click();
+
+
+            // Select2 search input
+            WebElement searchInput =
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(
+                            commoditySearchInput
+                    ));
+
+            // Search text
+            searchInput.clear();
+            searchInput.sendKeys("A");
+
+
+            // Database/autocomplete result থেকে random select
+            selectRandomAutocompleteOption(commodityOptions);
+        }
+
+
+
+        /**
+         * Commercial Invoice No
+         */
+        public void enterCommercialInvoiceNo () {
+
+            driver.findElement(commercialInvoiceNoField)
+                    .sendKeys("CMCLTST009");
+        }
+
+
+        /**
+         * Agreement Type
+         */
+        public void selectRandomAgreementType () {
+
+            selectRandomDropdown(agreementTypeDropdown);
+        }
+
+
+        /**
+         * Exp Ref No
+         */
+        public void enterExpRefNo () {
+
+            driver.findElement(expRefNoField)
+                    .sendKeys("EXPRF55");
+        }
+
+
+        /**
+         * Origin Country
+         */
+        public void selectRandomOriginCountry () {
+
+            selectRandomDropdown(originCountryDropdown);
+        }
+
+
+        /**
+         * Origin Receive
+         */
+        public void selectRandomOriginReceive () {
+
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(originReceiveField));
+
+            field.click();
+            field.sendKeys("Bangladesh");
+
+            selectRandomAutocompleteOption(autocomplete);
+        }
+
+
+        /**
+         * Load Port
+         */
+        public void selectRandomLoadPort () {
+
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(loadPortField));
+
+            field.click();
+            field.sendKeys(" ");
+
+            selectRandomAutocompleteOption(autocomplete);
+        }
+
+
+        /**
+         * Destination Country
+         */
+        public void selectRandomDestinationCountry () {
+
+            selectRandomDropdown(destinationCountryDropdown);
+        }
+
+
+        /**
+         * Destination / Discharge Port
+         */
+        public void selectRandomDischargePort () {
+
+            WebElement checkbox =
+                    driver.findElement(loadAllPortCheckbox);
+
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+
+            WebElement field =
+                    wait.until(ExpectedConditions.elementToBeClickable(dischargePortField));
+
+            field.click();
+            field.sendKeys(" ");
+
+            selectRandomAutocompleteOption(autocomplete);
+        }
+
+
+        /**
+         * Marks & Nos
+         */
+        public void enterMarksAndNos () {
+
+            driver.findElement(marksNosField)
+                    .sendKeys("As per invoice");
+        }
+
+
+        /**
+         * Description of Goods
+         */
+        public void enterDescriptionOfGoods () {
+
+            driver.findElement(descriptionGoodsField)
+                    .sendKeys("Ready made garments");
+        }
+
+
+        /**
+         * Remarks
+         */
+        public void enterRemarks () {
+
+            driver.findElement(remarksField)
+                    .sendKeys("For test purpose");
+        }
+
+
+        /**
+         * Reference No
+         */
+        public void enterReferenceNo () {
+
+            driver.findElement(referenceNoField)
+                    .sendKeys("Reference Test");
+        }
+
+
+        /**
+         * NRI
+         */
+        public void selectRandomNri () {
+
+            selectRandomDropdown(nriDropdown);
+        }
+
+
+        /**
+         * NRI Code
+         */
+        public void enterNriCode () {
+
+            driver.findElement(nriCodeField)
+                    .sendKeys("55T66");
+        }
+
+
+        /**
+         * Save
+         */
+        public void clickSave () {
+
+            wait.until(ExpectedConditions.elementToBeClickable(saveButton))
+                    .click();
+        }
     }
-
-
-    /**
-     * Marks & Nos
-     */
-    public void enterMarksAndNos() {
-
-        driver.findElement(marksNosField)
-                .sendKeys("As per invoice");
-    }
-
-
-    /**
-     * Description of Goods
-     */
-    public void enterDescriptionOfGoods() {
-
-        driver.findElement(descriptionGoodsField)
-                .sendKeys("Ready made garments");
-    }
-
-
-    /**
-     * Remarks
-     */
-    public void enterRemarks() {
-
-        driver.findElement(remarksField)
-                .sendKeys("For test purpose");
-    }
-
-
-    /**
-     * Reference No
-     */
-    public void enterReferenceNo() {
-
-        driver.findElement(referenceNoField)
-                .sendKeys("Reference Test");
-    }
-
-
-    /**
-     * NRI
-     */
-    public void selectRandomNri() {
-
-        selectRandomDropdown(nriDropdown);
-    }
-
-
-    /**
-     * NRI Code
-     */
-    public void enterNriCode() {
-
-        driver.findElement(nriCodeField)
-                .sendKeys("55T66");
-    }
-
-
-    /**
-     * Save
-     */
-    public void clickSave() {
-
-        wait.until(ExpectedConditions.elementToBeClickable(saveButton))
-                .click();
-    }
-}

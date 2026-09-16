@@ -56,14 +56,16 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.enterShipperBankName();
 
-        // Shipper Bank Address - not required
-
+        exportBookingPage.enterShipperBankAddress();
 
         // =====================================================
         // CONSIGNEE
         // =====================================================
 
+
         exportBookingPage.selectRandomConsignee();
+        exportBookingPage.enterConsigneeBankName();
+        exportBookingPage.enterConsigneeBankAddress();
 
         // Consignee Address - auto populated
 
