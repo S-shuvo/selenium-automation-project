@@ -152,9 +152,29 @@ public class ExportBookingPage extends BasePage {
     private By originCountryDropdown =
             By.xpath("//select[contains(@name,'originCountry') or contains(@id,'originCountry')]");
 
+//    private By originCountryField = ...;
+//
+//    private By originCountrySearchInput =
+//            By.cssSelector(".select2-container--open .select2-search__field");
+//
+//    private By originCountryOptions =
+//            By.cssSelector(
+//                    ".select2-container--open li.select2-results__option"
+//            );
+
+
     // Origin Receive
-    private By originReceiveField =
-            By.xpath("//input[contains(@name,'originReceive') or contains(@id,'originReceive')]");
+    private By originReceive =
+            By.xpath("//input[contains(@name,'receiveCity.name') or contains(@id,'receiveCityName')]");
+
+    // Origin Receive - Autocomplete Options
+    private By originReceiveOptions =
+            By.xpath(
+                    "//ul[contains(@class,'ui-menu') and not(contains(@style,'display: none'))]" +
+                            "//div[contains(@class,'ui-menu-item-wrapper')]"
+            );
+
+
 
     // Load Port
     private By loadPortField =
@@ -374,7 +394,6 @@ public class ExportBookingPage extends BasePage {
 
         selectRandomAutocompleteOption(shipperOptions);
     }
-
 
     /**
      * Shipper Title
@@ -597,28 +616,29 @@ public class ExportBookingPage extends BasePage {
         }
 
 
-        /**
-         * Origin Country
-         */
-        public void selectRandomOriginCountry () {
+//        /**
+//         * Origin Country (skipped; By default value selected)
+//         */
+//        public void selectRandomOriginCountry () {
+//
+//            selectRandomDropdown(originCountryDropdown);
+//        }
 
-            selectRandomDropdown(originCountryDropdown);
-        }
 
+    /**
+     * origin receive
+     */
 
-        /**
-         * Origin Receive
-         */
-        public void selectRandomOriginReceive () {
+    public void selectRandomOriginReceive() {
 
-            WebElement field =
-                    wait.until(ExpectedConditions.elementToBeClickable(originReceiveField));
+        WebElement field =
+                wait.until(ExpectedConditions.elementToBeClickable(originReceive));
 
-            field.click();
-            field.sendKeys("Bangladesh");
+        field.click();
+        field.sendKeys(" ");
 
-            selectRandomAutocompleteOption(autocomplete);
-        }
+        selectRandomAutocompleteOption(originReceiveOptions);
+    }
 
 
         /**
