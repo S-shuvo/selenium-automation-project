@@ -29,7 +29,7 @@ public class ExportBookingTest extends BaseTest {
 
 
         // =====================================================
-        // BASIC DETAILS
+        // BASIC DETAILS (ExportBooking.java)
         // =====================================================
 
         // Transport Mode - test data
@@ -43,7 +43,7 @@ public class ExportBookingTest extends BaseTest {
 
 
         // =====================================================
-        // SHIPPER
+        // SHIPPER (ExportBooking.java)
         // =====================================================
 
         exportBookingPage.selectRandomShipper();
@@ -59,27 +59,19 @@ public class ExportBookingTest extends BaseTest {
         exportBookingPage.enterShipperBankAddress();
 
         // =====================================================
-        // CONSIGNEE
+        // CONSIGNEE (ExportBooking.java)
         // =====================================================
-
 
         exportBookingPage.selectRandomConsignee();
         exportBookingPage.enterConsigneeBankName();
         exportBookingPage.enterConsigneeBankAddress();
-
-        // Consignee Address - auto populated
-
 
         // =====================================================
         // BUYING HOUSE
         // =====================================================
 
         exportBookingPage.selectRandomBuyingHouse();
-
-        // Buying House Address - auto populated
-
         exportBookingPage.enterBuyingHouseTitle();
-
 
         // =====================================================
         // FIRST NOTIFY PARTY
@@ -89,13 +81,11 @@ public class ExportBookingTest extends BaseTest {
 
         // First Notify Address - auto populated
 
-
         // =====================================================
         // SECOND NOTIFY PARTY
         // =====================================================
 
         exportBookingPage.enterSecondNotifyParty();
-
         exportBookingPage.enterSecondNotifyPartyAddress();
 
 
@@ -105,15 +95,12 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.selectRandomAgent();
 
-
         // =====================================================
         // CNF AGENT / COMMODITY
         // =====================================================
 
         exportBookingPage.selectRandomCnfAgent();
-
         exportBookingPage.selectRandomCommodityType();
-
 
         // =====================================================
         // COMMERCIAL INVOICE
@@ -121,64 +108,50 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.enterCommercialInvoiceNo();
 
-
         // =====================================================
         // AGREEMENT / EXP REF
         // =====================================================
 
         exportBookingPage.selectRandomAgreementType();
-
         exportBookingPage.enterExpRefNo();
-
 
         // =====================================================
         // ORIGIN
         // =====================================================
 
-//        exportBookingPage.selectRandomOriginCountry();
+//      exportBookingPage.selectRandomOriginCountry();
 
         exportBookingPage.selectRandomOriginReceive();
-
         exportBookingPage.selectRandomLoadPort();
-
 
         // =====================================================
         // DESTINATION
         // =====================================================
 
-        exportBookingPage.selectRandomDestinationCountry();
-
+        exportBookingPage.selectRandomDestCountry();
         exportBookingPage.selectRandomDischargePort();
-
 
         // =====================================================
         // GOODS DETAILS
         // =====================================================
 
         exportBookingPage.enterMarksAndNos();
-
         exportBookingPage.enterDescriptionOfGoods();
-
         exportBookingPage.enterRemarks();
-
         exportBookingPage.enterReferenceNo();
-
 
         // =====================================================
         // NRI
         // =====================================================
 
         exportBookingPage.selectRandomNri();
-
         exportBookingPage.enterNriCode();
-
 
         // =====================================================
         // SAVE EXPORT BOOKING
         // =====================================================
 
         exportBookingPage.clickSave();
-
 
         // =====================================================
         // EXPORT BOOKING DETAILS / PO
@@ -198,7 +171,6 @@ public class ExportBookingTest extends BaseTest {
         // =====================================================
 
         detailsPage.enterPO("PO-TEST-001");
-
         detailsPage.clickSave();
     }
 }

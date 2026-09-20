@@ -20,12 +20,10 @@ public class ExportBookingPage extends BasePage {
     // =========================================================
 
     // Transport Mode
-    private By transportModeDropdown =
-            By.id("carrierModeId");
+    private By transportModeDropdown = By.id("carrierModeId");
 
     // Key Account - input field
-    private By keyAccountField =
-            By.id("select2-keyAccountId-container");
+    private By keyAccountField = By.id("select2-keyAccountId-container");
 
     // key Account - AutoComplete
     private By keyAccountSearchInput =
@@ -33,9 +31,8 @@ public class ExportBookingPage extends BasePage {
 
     // Key Account - Autocomplete Options
     private By keyAccountOptions =
-            By.cssSelector(
-                    ".select2-container--open li.select2-results__option"
-            );
+            By.cssSelector(".select2-container--open li.select2-results__option");
+
     // Freight Term
     private By freightTermDropdown =
             By.xpath("//select[option[normalize-space()='CIP']]");
@@ -45,8 +42,7 @@ public class ExportBookingPage extends BasePage {
             By.xpath("//input[contains(@name,'shipper') or contains(@id,'shipper')]");
 
     // Shipper - Autocomplete Options
-    private By shipperOptions =
-            By.xpath(
+    private By shipperOptions = By.xpath(
                     "//ul[contains(@class,'ui-menu')]" +
                             "//div[contains(@class,'ui-menu-item-wrapper')]"
             );
@@ -74,8 +70,7 @@ public class ExportBookingPage extends BasePage {
     private By autocomplete =
             By.xpath("//ul[contains(@class,'ui-menu') and " +
                     "not(contains(@style, 'display: none'))]" +
-                    "//div[contains(@class,'ui-menu-item-wrapper')]"
-            );
+                    "//div[contains(@class,'ui-menu-item-wrapper')]");
 
     // Consignee Bank Name
     private By consigneeBankNameField =
@@ -129,12 +124,10 @@ public class ExportBookingPage extends BasePage {
     //Commodity search field
     private By commoditySearchInput =
             By.cssSelector(
-                    ".select2-container--open .select2-search__field"
-            );
+                    ".select2-container--open .select2-search__field");
 
     //commodity options
     private By commodityOptions = By.cssSelector("li.select2-results__option");
-
 
     // Commercial Invoice No
     private By commercialInvoiceNoField =
@@ -171,18 +164,23 @@ public class ExportBookingPage extends BasePage {
     private By originReceiveOptions =
             By.xpath(
                     "//ul[contains(@class,'ui-menu') and not(contains(@style,'display: none'))]" +
-                            "//div[contains(@class,'ui-menu-item-wrapper')]"
-            );
-
-
-
+                            "//div[contains(@class,'ui-menu-item-wrapper')]");
     // Load Port
     private By loadPortField =
             By.xpath("//input[contains(@name,'loadPort') or contains(@id,'loadPort')]");
 
-    // Destination Country
-    private By destinationCountryDropdown =
-            By.xpath("//select[contains(@name,'destinationCountry') or contains(@id,'destinationCountry')]");
+    // Destination Country - input field
+    private By destCountryField =
+            By.id("select2-destinationCountryId-container");
+
+    // Destination Country - Search Input
+    private By destCountrySearchInput =
+            By.cssSelector(".select2-container--open .select2-search__field");
+
+    // Destination Country - Autocomplete Options
+    private By destCountryOptions =
+            By.cssSelector(
+                    ".select2-container--open li.select2-results__option");
 
     // Load All Port checkbox
     private By loadAllPortCheckbox =
@@ -238,7 +236,6 @@ public class ExportBookingPage extends BasePage {
         System.out.println("Selected TransportMode : " + mode);
     }
 
-
     /**
      * Select random value from normal HTML dropdown
      */
@@ -255,7 +252,6 @@ public class ExportBookingPage extends BasePage {
 
         select.selectByIndex(randomIndex);
     }
-
 
     /**
      * Freight Term - random
@@ -514,7 +510,6 @@ public class ExportBookingPage extends BasePage {
                     .sendKeys("Test Second Notify party");
         }
 
-
         /**
          * Second Notify Party Address
          */
@@ -523,7 +518,6 @@ public class ExportBookingPage extends BasePage {
             driver.findElement(secondNotifyAddressField)
                     .sendKeys("Test Second Notify Party Address");
         }
-
 
         /**
          * Agent (!from here!!!!!!!!!!!!!!)
@@ -546,7 +540,6 @@ public class ExportBookingPage extends BasePage {
             selectRandomAutocompleteOption(autocomplete);
         }
 
-
         /**
          * CNF Agent
          */
@@ -554,7 +547,6 @@ public class ExportBookingPage extends BasePage {
 
             selectRandomDropdown(cnfAgentDropdown);
         }
-
 
         /**
          * Commodity Type
@@ -568,7 +560,6 @@ public class ExportBookingPage extends BasePage {
                     ));
 
             field.click();
-
 
             // Select2 search input
             WebElement searchInput =
@@ -585,8 +576,6 @@ public class ExportBookingPage extends BasePage {
             selectRandomAutocompleteOption(commodityOptions);
         }
 
-
-
         /**
          * Commercial Invoice No
          */
@@ -596,7 +585,6 @@ public class ExportBookingPage extends BasePage {
                     .sendKeys("CMCLTST009");
         }
 
-
         /**
          * Agreement Type
          */
@@ -604,7 +592,6 @@ public class ExportBookingPage extends BasePage {
 
             selectRandomDropdown(agreementTypeDropdown);
         }
-
 
         /**
          * Exp Ref No
@@ -614,221 +601,6 @@ public class ExportBookingPage extends BasePage {
             driver.findElement(expRefNoField)
                     .sendKeys("EXPRF55");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //        /**
 //         * Origin Country (skipped; By default value selected)
@@ -854,7 +626,6 @@ public class ExportBookingPage extends BasePage {
         selectRandomAutocompleteOption(originReceiveOptions);
     }
 
-
         /**
          * Load Port
          */
@@ -869,15 +640,43 @@ public class ExportBookingPage extends BasePage {
             selectRandomAutocompleteOption(autocomplete);
         }
 
+    /**
+     * Destination Country:
+     * Click field -> Search input load -> type "t"
+     * -> wait for options -> select random option
+     */
+    public void selectRandomDestCountry() {
 
-        /**
-         * Destination Country
-         */
-        public void selectRandomDestinationCountry () {
+        WebElement field =
+                wait.until(ExpectedConditions.elementToBeClickable(
+                        destCountryField
+                ));
 
-            selectRandomDropdown(destinationCountryDropdown);
-        }
+        field.click();
 
+        WebElement searchInput =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(
+                        destCountrySearchInput
+                ));
+
+        searchInput.clear();
+        searchInput.sendKeys("t");
+
+        // Confirm "t" was entered into the search field
+        wait.until(driver ->
+                "t".equalsIgnoreCase(
+                        searchInput.getAttribute("value")
+                )
+        );
+
+        // Select random Destination Country
+        selectRandomAutocompleteOption(destCountryOptions);
+
+        System.out.println(
+                "Selected Destination Country : " +
+                        field.getText()
+        );
+    }
 
         /**
          * Destination / Discharge Port
@@ -900,7 +699,6 @@ public class ExportBookingPage extends BasePage {
             selectRandomAutocompleteOption(autocomplete);
         }
 
-
         /**
          * Marks & Nos
          */
@@ -909,7 +707,6 @@ public class ExportBookingPage extends BasePage {
             driver.findElement(marksNosField)
                     .sendKeys("As per invoice");
         }
-
 
         /**
          * Description of Goods
@@ -920,7 +717,6 @@ public class ExportBookingPage extends BasePage {
                     .sendKeys("Ready made garments");
         }
 
-
         /**
          * Remarks
          */
@@ -929,7 +725,6 @@ public class ExportBookingPage extends BasePage {
             driver.findElement(remarksField)
                     .sendKeys("For test purpose");
         }
-
 
         /**
          * Reference No
@@ -940,7 +735,6 @@ public class ExportBookingPage extends BasePage {
                     .sendKeys("Reference Test");
         }
 
-
         /**
          * NRI
          */
@@ -948,7 +742,6 @@ public class ExportBookingPage extends BasePage {
 
             selectRandomDropdown(nriDropdown);
         }
-
 
         /**
          * NRI Code
@@ -958,7 +751,6 @@ public class ExportBookingPage extends BasePage {
             driver.findElement(nriCodeField)
                     .sendKeys("55T66");
         }
-
 
         /**
          * Save
