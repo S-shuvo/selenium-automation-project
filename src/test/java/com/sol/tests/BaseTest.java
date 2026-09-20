@@ -6,28 +6,41 @@ import com.sol.utilities.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 public class BaseTest {
 
     protected WebDriver driver;
 
     @BeforeMethod
-    public void setUp() {
+    @Parameters({"server", "browser"})
+    public void setUp(
+            @Optional("server1") String server,
+            @Optional("chrome") String browser
+    ) {
 
         // 1. Open browser
-        driver = BrowserFactory.createDriver();
+        driver = BrowserFactory.createDriver(browser);
 
+        System.out.println("Server : " + server);
+        System.out.println("URL : " + ConfigReader.getServerUrl(server));
         // 2. Open application login page
-        driver.get(ConfigReader.get("app.url"));
+        driver.get(
+                ConfigReader.getServerUrl("server2")
+        );
 
-        System.out.println("Application Title: " + driver.getTitle());
+        System.out.println("Server : " + server);
+        System.out.println("Browser : " + browser);
+        System.out.println("Application Title : " + driver.getTitle());
 
         // 3. Login
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage =
+                new LoginPage(driver);
 
         loginPage.login(
-                ConfigReader.get("app.username"),
-                ConfigReader.get("app.password")
+                ConfigReader.getServerUsername(server),
+                ConfigReader.getServerPassword(server)
         );
 
         System.out.println("Login successful.");

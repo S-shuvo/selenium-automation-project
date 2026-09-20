@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM
+        "https://testng.org/testng-1.0.dtd">
+
+<suite name="SOL Test Suite">
+
+    <test name="Server 2 Chrome">
+
+        <parameter name="server" value="server2"/>
+        <parameter name="browser" value="chrome"/>
+
+        <classes>
+            <class name="com.sol.tests.ExportBookingTest"/>
+        </classes>
+
+    </test>
+
+</suite>
