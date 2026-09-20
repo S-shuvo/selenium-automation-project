@@ -3,12 +3,50 @@
 <!DOCTYPE suite SYSTEM
         "https://testng.org/testng-1.0.dtd">
 
-<suite name="SOL Test Suite">
+<suite name="SOL Parallel Test Suite"
+       parallel="tests"
+       thread-count="4">
+
+    <test name="Server 1 Chrome">
+
+        <parameter name="server" value="server1"/>
+        <parameter name="browser" value="chrome"/>
+
+        <classes>
+            <class name="com.sol.tests.ExportBookingTest"/>
+        </classes>
+
+    </test>
+
 
     <test name="Server 2 Chrome">
 
         <parameter name="server" value="server2"/>
         <parameter name="browser" value="chrome"/>
+
+        <classes>
+            <class name="com.sol.tests.ExportBookingTest"/>
+        </classes>
+
+    </test>
+
+
+    <test name="Server 3 Firefox">
+
+        <parameter name="server" value="server3"/>
+        <parameter name="browser" value="firefox"/>
+
+        <classes>
+            <class name="com.sol.tests.ExportBookingTest"/>
+        </classes>
+
+    </test>
+
+
+    <test name="Server 4 Firefox">
+
+        <parameter name="server" value="server4"/>
+        <parameter name="browser" value="firefox"/>
 
         <classes>
             <class name="com.sol.tests.ExportBookingTest"/>

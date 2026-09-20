@@ -27,7 +27,7 @@ public class BaseTest {
         System.out.println("URL : " + ConfigReader.getServerUrl(server));
         // 2. Open application login page
         driver.get(
-                ConfigReader.getServerUrl("server2")
+                ConfigReader.getServerUrl(server)
         );
 
         System.out.println("Server : " + server);
