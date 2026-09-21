@@ -182,13 +182,21 @@ public class ExportBookingPage extends BasePage {
             By.cssSelector(
                     ".select2-container--open li.select2-results__option");
 
+    //Destination City
+    private By destCityField =
+            By.id("dischargeCityName");
+
     // Load All Port checkbox
     private By loadAllPortCheckbox =
             By.xpath("//input[@type='checkbox' and following-sibling::text()[contains(.,'Load All Port')]]");
 
     // Discharge Port
     private By dischargePortField =
-            By.xpath("//input[contains(@name,'discharge') or contains(@id,'discharge')]");
+            By.xpath("//input[contains(@name,'dischargePort.codeNameTxt') or contains(@id,'txtDischargePortCodeName')]");
+
+    //Final Destination
+    private By FinalDestinationField =
+            By.xpath("//input[contains(@name,'finalDestinationCity.name') or contains(@id,'finalDestinationCityName')]");
 
     // Marks & Nos
     private By marksNosField =
@@ -208,15 +216,15 @@ public class ExportBookingPage extends BasePage {
 
     // NRI
     private By nriDropdown =
-            By.xpath("//select[contains(@name,'nri') or contains(@id,'nri')]");
+            By.xpath("//select[contains(@name,'nonResident') or contains(@id,'nonResidentId')]");
 
     // NRI Code
     private By nriCodeField =
-            By.xpath("//input[contains(@name,'nriCode') or contains(@id,'nriCode')]");
+            By.xpath("//input[contains(@name,'nonResidentName') or contains(@id,'nonResidentName')]");
 
     // Save
     private By saveButton =
-            By.xpath("//input[@value='Save'] | //button[normalize-space()='Save']");
+            By.id("btnSave");
 
 
     // =========================================================
@@ -520,7 +528,7 @@ public class ExportBookingPage extends BasePage {
         }
 
         /**
-         * Agent (!from here!!!!!!!!!!!!!!)
+         * Agent
          */
         public void selectRandomAgent () {
 
@@ -678,6 +686,20 @@ public class ExportBookingPage extends BasePage {
         );
     }
 
+    /**
+     * Destination city
+     */
+    public void selectRandomDestinationCity () {
+
+        WebElement field =
+                wait.until(ExpectedConditions.elementToBeClickable(destCityField));
+
+        field.click();
+        field.sendKeys(" ");
+
+        selectRandomAutocompleteOption(autocomplete);
+    }
+
         /**
          * Destination / Discharge Port
          */
@@ -698,6 +720,20 @@ public class ExportBookingPage extends BasePage {
 
             selectRandomAutocompleteOption(autocomplete);
         }
+
+    /**
+     * Final Destination
+     */
+    public void selectRandomFinalDestination () {
+
+        WebElement field =
+                wait.until(ExpectedConditions.elementToBeClickable(FinalDestinationField));
+
+        field.click();
+        field.sendKeys(" ");
+
+        selectRandomAutocompleteOption(autocomplete);
+    }
 
         /**
          * Marks & Nos
