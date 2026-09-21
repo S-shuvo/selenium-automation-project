@@ -119,7 +119,7 @@ public class ExportBookingTest extends BaseTest {
         // ORIGIN
         // =====================================================
 
-//      exportBookingPage.selectRandomOriginCountry();
+        //exportBookingPage.selectRandomOriginCountry();
 
         exportBookingPage.selectRandomOriginReceive();
         exportBookingPage.selectRandomLoadPort();

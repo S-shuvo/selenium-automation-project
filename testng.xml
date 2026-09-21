@@ -54,4 +54,14 @@
 
     </test>
 
+    <test name="server 5 Chrome">
+        <parameter name="server" value="server5"/>
+        <parameter name="server" value="chrome"/>
+
+        <classes>
+            <class name="com.sol.tests.ExportBookingTest"/>
+        </classes>
+
+    </test>
+
 </suite>
