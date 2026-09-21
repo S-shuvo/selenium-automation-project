@@ -4,6 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ExportBookingDetailsPage extends BasePage {
 
     public ExportBookingDetailsPage(WebDriver driver) {
@@ -14,9 +17,10 @@ public class ExportBookingDetailsPage extends BasePage {
     // LOCATORS
     // =========================================================
 
-    // Export Booking Number / success message
+    // Export Booking success message
     private By bookingNumberMessage =
-            By.xpath("//*[contains(text(),'Export Booking') or contains(text(),'Booking No')]");
+            By.xpath("//p[contains(.,'Export booking saved successfully') and contains(.,'Booking No')]");
+
 
     // PO field
     // TODO: Inspect করে actual id/name বসাতে হবে
@@ -34,13 +38,42 @@ public class ExportBookingDetailsPage extends BasePage {
     // =========================================================
 
     /**
-     * Booking number message wait
+     * Get complete booking success message
      */
     public String getBookingNumberMessage() {
 
         return wait.until(
                 ExpectedConditions.visibilityOfElementLocated(bookingNumberMessage)
         ).getText();
+    }
+
+
+    /**
+     * Extract Booking Number from success message
+     */
+    public String getBookingNumber() {
+
+        String message = getBookingNumberMessage();
+
+        System.out.println("Booking Message: " + message);
+
+        Pattern pattern =
+                Pattern.compile("Booking No\\.\\s*:\\s*([A-Z0-9]+)");
+
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.find()) {
+
+            String bookingNumber = matcher.group(1);
+
+            System.out.println("Booking Number: " + bookingNumber);
+
+            return bookingNumber;
+        }
+
+        throw new RuntimeException(
+                "Booking number not found in message: " + message
+        );
     }
 
 

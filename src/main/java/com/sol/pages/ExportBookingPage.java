@@ -590,7 +590,7 @@ public class ExportBookingPage extends BasePage {
         public void enterCommercialInvoiceNo () {
 
             driver.findElement(commercialInvoiceNoField)
-                    .sendKeys("CMCLTST009");
+                    .sendKeys("CMCLTST012");
         }
 
         /**
