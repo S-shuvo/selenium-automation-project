@@ -155,9 +155,9 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.clickSave();
 
-        // =====================================================
-        // EXPORT BOOKING DETAILS / PO
-        // =====================================================
+// =====================================================
+// EXPORT BOOKING DETAILS / PO
+// =====================================================
 
         ExportBookingDetailsPage detailsPage =
                 new ExportBookingDetailsPage(driver);
@@ -168,11 +168,67 @@ public class ExportBookingTest extends BaseTest {
         );
 
 
-        // =====================================================
-        // PO
-        // =====================================================
+// =====================================================
+// BOOKING DETAILS
+// =====================================================
 
         detailsPage.enterPO("PO-TEST-001");
+
+        detailsPage.enterStyle("TEST-STYLE");
+
+        detailsPage.enterColor("BLACK");
+
+        detailsPage.enterSO("SO-TEST-001");
+
+        detailsPage.enterPackageQty("10");
+
+// যদি Package dropdown ব্যবহার করো
+        detailsPage.selectPackageType("CARTON");
+
+        detailsPage.enterPcs("100");
+
+        detailsPage.enterDimensionL("10");
+
+        detailsPage.enterDimensionW("20");
+
+        detailsPage.enterDimensionH("30");
+
+        detailsPage.enterCBM("6");
+
+        detailsPage.enterGWT("100");
+
+        detailsPage.enterVWT("110");
+
+        detailsPage.enterNetWt("95");
+
+        detailsPage.enterHSCode("62034200");
+
+//        detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
+
+        detailsPage.enterSerialNo("SN-001");
+
+        detailsPage.enterDept("TEST");
+
+        detailsPage.enterRefSize("L");
+
+        detailsPage.enterRmsStyle("TEST-RMS");
+
+        detailsPage.enterCat("TEST");
+
+
+// =====================================================
+// SELECT ROW & COPY
+// =====================================================
+
+        detailsPage.selectBookingRow();
+
+        detailsPage.clickCopy();
+
+
+// =====================================================
+// SAVE
+// =====================================================
+
         detailsPage.clickSave();
     }
 }
