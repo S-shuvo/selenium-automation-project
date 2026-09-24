@@ -1,450 +1,267 @@
 package com.sol.pages;
 
+import com.sol.utilities.DropdownUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExportBookingDetailsPage extends BasePage {
 
+    private final DropdownUtils dropdownUtils;
+
     public ExportBookingDetailsPage(WebDriver driver) {
         super(driver);
+        dropdownUtils = new DropdownUtils(driver);
     }
 
     // =========================================================
     // LOCATORS
     // =========================================================
 
-    // =========================================================
-    // BOOKING DETAILS LOCATORS
-    // =========================================================
+    // Booking Information
 
-    private By poField =
+    private final By poField =
             By.xpath("//input[contains(@name,'po') or contains(@id,'po')]");
 
-    private By styleField =
+    private final By styleField =
             By.xpath("//input[contains(@name,'style') or contains(@id,'style')]");
 
-    private By colorField =
+    private final By colorField =
             By.xpath("//input[contains(@name,'color') or contains(@id,'color')]");
 
-    private By soField =
+    private final By soField =
             By.xpath("//input[contains(@name,'so') or contains(@id,'so')]");
 
-    private By cartonField =
+    private final By cartonField =
             By.xpath("//input[contains(@name,'packageQty') or contains(@id,'packageQty')]");
 
-    private By packageDropdown =
+    private final By packageDropdown =
             By.xpath("//select[contains(@name,'uom') or contains(@id,'uom')]");
 
-    private By pcsField =
+    private final By pcsField =
             By.xpath("//input[contains(@name,'pcs') or contains(@id,'pcs')]");
 
-    private By dimensionLField =
+
+    // =========================================================
+    // DIMENSION & WEIGHT
+    // =========================================================
+
+    private final By dimensionLField =
             By.xpath("//input[contains(@name,'dimensionL') or contains(@id,'dimensionL')]");
 
-    private By dimensionWField =
+    private final By dimensionWField =
             By.xpath("//input[contains(@name,'dimensionW') or contains(@id,'dimensionW')]");
 
-    private By dimensionHField =
+    private final By dimensionHField =
             By.xpath("//input[contains(@name,'dimensionH') or contains(@id,'dimensionH')]");
 
-    private By cbmField =
+    private final By cbmField =
             By.xpath("//input[contains(@name,'cbm') or contains(@id,'cbm')]");
 
-    private By gwtField =
+    private final By gwtField =
             By.xpath("//input[contains(@name,'gwt') or contains(@id,'gwt')]");
 
-    private By vwtField =
+    private final By vwtField =
             By.xpath("//input[contains(@name,'vwt') or contains(@id,'vwt')]");
 
-    private By netWtField =
+    private final By netWtField =
             By.xpath("//input[contains(@name,'netWt') or contains(@id,'netWt')]");
 
-    private By hsCodeField =
+
+    // =========================================================
+    // PRODUCT / ITEM INFORMATION
+    // =========================================================
+
+    private final By hsCodeField =
             By.xpath("//input[contains(@name,'hsCode') or contains(@id,'hsCode')]");
 
-//    private By itemClrSkuSoLmpoField =
-//            By.xpath("//input[contains(@name,'itemClrSkuSoLmpo') or contains(@id,'itemClrSkuSoLmpo')]");
-
-    private By serialNoField =
+    private final By serialNoField =
             By.xpath("//input[contains(@name,'serialNo') or contains(@id,'serialNo')]");
 
-    private By deptField =
+    private final By deptField =
             By.xpath("//input[contains(@name,'dept') or contains(@id,'dept')]");
 
-    private By refSizeField =
+    private final By refSizeField =
             By.xpath("//input[contains(@name,'refSize') or contains(@id,'refSize')]");
 
-    private By rmsStyleField =
+    private final By rmsStyleField =
             By.xpath("//input[contains(@name,'rmsStyle') or contains(@id,'rmsStyle')]");
 
-    private By catField =
+    private final By catField =
             By.xpath("//input[contains(@name,'cat') or contains(@id,'cat')]");
 
 
     // =========================================================
-    // ROW CHECKBOX
+    // BOOKING ROW
     // =========================================================
 
-    private By rowCheckbox =
-            By.xpath("//input[contains(@name,'bookingList[0].poNo')]" +
-                    "/ancestor::tr[1]//input[@type='checkbox']");
+    private final By rowCheckbox =
+            By.xpath(
+                    "//input[contains(@name,'bookingList[0].poNo')]" +
+                            "/ancestor::tr[1]//input[@type='checkbox']"
+            );
 
 
     // =========================================================
     // COPY BUTTON
     // =========================================================
 
-    private By copyButton =
-            By.xpath("//input[contains(@value,'Copy')] | //button[contains(normalize-space(),'Copy')]");
+    private final By copyButton =
+            By.xpath(
+                    "//input[contains(@value,'Copy')]" +
+                            " | //button[contains(normalize-space(),'Copy')]"
+            );
+
+    //======================================================
+    // Booking Status
+    // =====================================================
+
+    private final By bookingStatus = By.xpath("//select[contains(@name,'bookingStatusId') " +
+            "or contains(@id,'bookingStatusId')]");
+
 
     // =========================================================
-    // PO SAVE BUTTON
+    // SAVE BUTTON
     // =========================================================
 
-    private By poSaveButton =
-            By.xpath("//input[@value='Save'] | //button[normalize-space()='Save']");
+    private final By poSaveButton =
+            By.xpath(
+                    "//input[@value='Save']" +
+                            " | //button[normalize-space()='Save']"
+            );
 
 
     // =========================================================
-    // BOOKING SUCCESS MESSAGE
+    // BOOKING NUMBER MESSAGE
     // =========================================================
 
-    private By bookingNumberMessage =
+    private final By bookingNumberMessage =
             By.xpath("//*[contains(normalize-space(),'Booking No.')]");
 
 
     // =========================================================
-    // ENTER PO
+    // COMMON TEXT FIELD METHOD
     // =========================================================
 
-    /**
-     * Enter PO
-     */
-    public void enterPO(String poNumber) {
+    private void enterText(By locator, String value) {
 
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(poField)
-        ).sendKeys(poNumber);
+        WebElement element =
+                wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(locator)
+                );
+
+        element.clear();
+        element.sendKeys(value);
     }
 
 
     // =========================================================
-    // ENTER STYLE
+    // BOOKING INFORMATION METHODS
     // =========================================================
 
-    /**
-     * Enter Style
-     */
+    public void enterPO(String po) {
+        enterText(poField, po);
+    }
+
     public void enterStyle(String style) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(styleField)
-        ).sendKeys(style);
+        enterText(styleField, style);
     }
 
-
-    // =========================================================
-    // ENTER COLOR
-    // =========================================================
-
-    /**
-     * Enter Color
-     */
     public void enterColor(String color) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(colorField)
-        ).sendKeys(color);
+        enterText(colorField, color);
     }
 
-
-    // =========================================================
-    // ENTER SO
-    // =========================================================
-
-    /**
-     * Enter SO
-     */
     public void enterSO(String so) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(soField)
-        ).sendKeys(so);
+        enterText(soField, so);
     }
 
-
-    // =========================================================
-    // ENTER PACKAGE QUANTITY
-    // =========================================================
-
-    /**
-     * Enter Package Quantity
-     */
-    public void enterPackageQty(String quantity) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(cartonField)
-        ).sendKeys(quantity);
+    public void enterCarton(String carton) {
+        enterText(cartonField, carton);
     }
 
-
-    // =========================================================
-    // SELECT PACKAGE TYPE
-    // =========================================================
-
-    /**
-     * Select Package Type
-     */
     public void selectPackageType(String packageType) {
 
-        WebElement dropdown = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(packageDropdown)
+        dropdownUtils.selectByVisibleText(
+                packageDropdown,
+                packageType
         );
+    }
 
-        Select select = new Select(dropdown);
-
-        select.selectByVisibleText(packageType);
+    public void enterPCS(String pcs) {
+        enterText(pcsField, pcs);
     }
 
 
     // =========================================================
-    // ENTER PCS
+    // DIMENSION & WEIGHT METHODS
     // =========================================================
 
-    /**
-     * Enter PCS
-     */
-    public void enterPcs(String pcs) {
+    public void enterDimensionL(String value) {
+        enterText(dimensionLField, value);
+    }
 
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(pcsField)
-        ).sendKeys(pcs);
+    public void enterDimensionW(String value) {
+        enterText(dimensionWField, value);
+    }
+
+    public void enterDimensionH(String value) {
+        enterText(dimensionHField, value);
+    }
+
+    public void enterCBM(String value) {
+        enterText(cbmField, value);
+    }
+
+    public void enterGWT(String value) {
+        enterText(gwtField, value);
+    }
+
+    public void enterVWT(String value) {
+        enterText(vwtField, value);
+    }
+
+    public void enterNetWt(String value) {
+        enterText(netWtField, value);
     }
 
 
     // =========================================================
-    // ENTER DIMENSION L
+    // PRODUCT / ITEM METHODS
     // =========================================================
 
-    /**
-     * Enter Dimension L
-     */
-    public void enterDimensionL(String dimensionL) {
+    public void enterHSCode(String value) {
+        enterText(hsCodeField, value);
+    }
 
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(dimensionLField)
-        ).sendKeys(dimensionL);
+    public void enterSerialNo(String value) {
+        enterText(serialNoField, value);
+    }
+
+    public void enterDept(String value) {
+        enterText(deptField, value);
+    }
+
+    public void enterRefSize(String value) {
+        enterText(refSizeField, value);
+    }
+
+    public void enterRmsStyle(String value) {
+        enterText(rmsStyleField, value);
+    }
+
+    public void enterCategory(String value) {
+        enterText(catField, value);
     }
 
 
     // =========================================================
-    // ENTER DIMENSION W
+    // BOOKING ROW
     // =========================================================
 
-    /**
-     * Enter Dimension W
-     */
-    public void enterDimensionW(String dimensionW) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(dimensionWField)
-        ).sendKeys(dimensionW);
-    }
-
-
-    // =========================================================
-    // ENTER DIMENSION H
-    // =========================================================
-
-    /**
-     * Enter Dimension H
-     */
-    public void enterDimensionH(String dimensionH) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(dimensionHField)
-        ).sendKeys(dimensionH);
-    }
-
-
-    // =========================================================
-    // ENTER CBM
-    // =========================================================
-
-    /**
-     * Enter CBM
-     */
-    public void enterCBM(String cbm) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(cbmField)
-        ).sendKeys(cbm);
-    }
-
-
-    // =========================================================
-    // ENTER GWT
-    // =========================================================
-
-    /**
-     * Enter GWT
-     */
-    public void enterGWT(String gwt) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(gwtField)
-        ).sendKeys(gwt);
-    }
-
-
-    // =========================================================
-    // ENTER VWT
-    // =========================================================
-
-    /**
-     * Enter VWT
-     */
-    public void enterVWT(String vwt) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(vwtField)
-        ).sendKeys(vwt);
-    }
-
-
-    // =========================================================
-    // ENTER NET WEIGHT
-    // =========================================================
-
-    /**
-     * Enter Net Weight
-     */
-    public void enterNetWt(String netWt) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(netWtField)
-        ).sendKeys(netWt);
-    }
-
-
-    // =========================================================
-    // ENTER HS CODE
-    // =========================================================
-
-    /**
-     * Enter HS Code
-     */
-    public void enterHSCode(String hsCode) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(hsCodeField)
-        ).sendKeys(hsCode);
-    }
-
-
-    // =========================================================
-    // ENTER ITEM COLOR / SKU / SO / LMPO
-    // =========================================================
-
-//    /**
-//     * Enter Item Color / SKU / SO / LMPO
-//     */
-//    public void enterItemClrSkuSoLmpo(String value) {
-//
-//        wait.until(
-//                ExpectedConditions.visibilityOfElementLocated(itemClrSkuSoLmpoField)
-//        ).sendKeys(value);
-//    }
-
-
-    // =========================================================
-    // ENTER SERIAL NO
-    // =========================================================
-
-    /**
-     * Enter Serial No
-     */
-    public void enterSerialNo(String serialNo) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(serialNoField)
-        ).sendKeys(serialNo);
-    }
-
-
-    // =========================================================
-    // ENTER DEPARTMENT
-    // =========================================================
-
-    /**
-     * Enter Department
-     */
-    public void enterDept(String dept) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(deptField)
-        ).sendKeys(dept);
-    }
-
-
-    // =========================================================
-    // ENTER REFERENCE SIZE
-    // =========================================================
-
-    /**
-     * Enter Reference Size
-     */
-    public void enterRefSize(String refSize) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(refSizeField)
-        ).sendKeys(refSize);
-    }
-
-
-    // =========================================================
-    // ENTER RMS STYLE
-    // =========================================================
-
-    /**
-     * Enter RMS Style
-     */
-    public void enterRmsStyle(String rmsStyle) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(rmsStyleField)
-        ).sendKeys(rmsStyle);
-    }
-
-
-    // =========================================================
-    // ENTER CATEGORY
-    // =========================================================
-
-    /**
-     * Enter Category
-     */
-    public void enterCat(String cat) {
-
-        wait.until(
-                ExpectedConditions.visibilityOfElementLocated(catField)
-        ).sendKeys(cat);
-    }
-
-
-    // =========================================================
-    // SELECT BOOKING ROW
-    // =========================================================
-
-    /**
-     * Select Booking Row
-     */
     public void selectBookingRow() {
 
         wait.until(
@@ -454,12 +271,9 @@ public class ExportBookingDetailsPage extends BasePage {
 
 
     // =========================================================
-    // CLICK COPY
+    // COPY
     // =========================================================
 
-    /**
-     * Click Copy
-     */
     public void clickCopy() {
 
         wait.until(
@@ -469,45 +283,38 @@ public class ExportBookingDetailsPage extends BasePage {
 
 
     // =========================================================
-    // GET BOOKING SUCCESS MESSAGE
+    // BOOKING MESSAGE
     // =========================================================
 
-    /**
-     * Get complete booking success message
-     */
     public String getBookingNumberMessage() {
 
         return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(bookingNumberMessage)
+                ExpectedConditions.visibilityOfElementLocated(
+                        bookingNumberMessage
+                )
         ).getText();
     }
 
 
     // =========================================================
-    // GET BOOKING NUMBER
+    // EXTRACT BOOKING NUMBER
     // =========================================================
 
-    /**
-     * Extract Booking Number from success message
-     */
     public String getBookingNumber() {
 
         String message = getBookingNumberMessage();
 
-        System.out.println("Booking Message: " + message);
-
         Pattern pattern =
-                Pattern.compile("Booking No\\.\\s*:\\s*([A-Z0-9]+)");
+                Pattern.compile(
+                        "Booking No\\.\\s*:\\s*([A-Z0-9]+)"
+                );
 
-        Matcher matcher = pattern.matcher(message);
+        Matcher matcher =
+                pattern.matcher(message);
 
         if (matcher.find()) {
 
-            String bookingNumber = matcher.group(1);
-
-            System.out.println("Booking Number: " + bookingNumber);
-
-            return bookingNumber;
+            return matcher.group(1);
         }
 
         throw new RuntimeException(
@@ -517,16 +324,23 @@ public class ExportBookingDetailsPage extends BasePage {
 
 
     // =========================================================
-    // SAVE PO
+    // SAVE
     // =========================================================
 
-    /**
-     * Save PO
-     */
     public void clickSave() {
 
         wait.until(
                 ExpectedConditions.elementToBeClickable(poSaveButton)
         ).click();
+    }
+
+
+    // =========================================================
+    // BOOKING STATUS
+    // =========================================================
+
+    public void selectBookingStatus() {
+
+        dropdownUtils.selectByVisibleText(bookingStatus, "Submitted to CRM");
     }
 }

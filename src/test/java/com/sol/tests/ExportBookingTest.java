@@ -180,12 +180,12 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterSO("SO-TEST-001");
 
-        detailsPage.enterPackageQty("10");
+        detailsPage.enterCarton("10");
 
 // যদি Package dropdown ব্যবহার করো
         detailsPage.selectPackageType("CARTON");
 
-        detailsPage.enterPcs("100");
+        detailsPage.enterPCS("100");
 
         detailsPage.enterDimensionL("10");
 
@@ -213,7 +213,7 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterRmsStyle("TEST-RMS");
 
-        detailsPage.enterCat("TEST");
+        detailsPage.enterCategory("TEST");
 
 
 // =====================================================
@@ -223,6 +223,7 @@ public class ExportBookingTest extends BaseTest {
         detailsPage.selectBookingRow();
 
         detailsPage.clickCopy();
+        detailsPage.selectBookingStatus();
 
 
 // =====================================================
