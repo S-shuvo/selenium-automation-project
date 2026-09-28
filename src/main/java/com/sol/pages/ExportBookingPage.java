@@ -647,12 +647,11 @@ public class ExportBookingPage extends BasePage {
         );
     }
 
-
     // ---------------------------------------------------------
-    // ORIGIN
+    // RandomOriginReceive
     // ---------------------------------------------------------
 
-    public void selectRandomOriginReceive() {
+/*    public void selectRandomOriginReceive() {
 
         WebElement field =
                 wait.until(
@@ -667,10 +666,42 @@ public class ExportBookingPage extends BasePage {
         selectRandomAutocomplete(
                 originReceiveOptions
         );
+    }*/
+// ---------------------------------------------------------
+// ORIGIN
+// ---------------------------------------------------------
+
+    public void selectOriginReceive() {
+
+        WebElement field =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                originReceive
+                        )
+                );
+
+        field.click();
+        field.clear();
+        field.sendKeys("CHITTAGONG");
+
+        WebElement option =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                By.xpath(
+                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'CHITTAGONG')]"
+                                )
+                        )
+                );
+
+        option.click();
     }
 
 
-    public void selectRandomLoadPort() {
+// ---------------------------------------------------------
+// RandomLoadPortSelection
+// ---------------------------------------------------------
+
+/*    public void selectRandomLoadPort() {
 
         WebElement field =
                 wait.until(
@@ -685,6 +716,31 @@ public class ExportBookingPage extends BasePage {
         selectRandomAutocomplete(
                 autocomplete
         );
+    }*/
+
+    public void selectLoadPort() {
+
+        WebElement field =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                loadPortField
+                        )
+                );
+
+        field.click();
+        field.clear();
+        field.sendKeys("BD");
+
+        WebElement option =
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(
+                                By.xpath(
+                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDBNP - BENAPOLE')]"
+                                )
+                        )
+                );
+
+        option.click();
     }
 
 

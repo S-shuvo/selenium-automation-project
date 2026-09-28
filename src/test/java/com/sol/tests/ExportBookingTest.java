@@ -33,7 +33,7 @@ public class ExportBookingTest extends BaseTest {
         // =====================================================
 
         // Transport Mode - test data
-        exportBookingPage.selectTransportMode("Air");
+        exportBookingPage.selectTransportMode("Sea-Air");
 
         // Key Account - random
         exportBookingPage.selectRandomKeyAccount();
@@ -121,8 +121,10 @@ public class ExportBookingTest extends BaseTest {
 
         //exportBookingPage.selectRandomOriginCountry();
 
-        exportBookingPage.selectRandomOriginReceive();
-        exportBookingPage.selectRandomLoadPort();
+        exportBookingPage.selectOriginReceive();
+        //exportBookingPage.selectRandomOriginReceive();
+        //exportBookingPage.selectRandomLoadPort();
+        exportBookingPage.selectLoadPort();
 
         // =====================================================
         // DESTINATION
@@ -221,7 +223,6 @@ public class ExportBookingTest extends BaseTest {
 // =====================================================
 
         detailsPage.selectBookingRow();
-
         detailsPage.clickCopy();
         detailsPage.selectBookingStatus();
 

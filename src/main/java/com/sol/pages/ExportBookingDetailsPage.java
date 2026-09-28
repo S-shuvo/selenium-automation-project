@@ -341,6 +341,6 @@ public class ExportBookingDetailsPage extends BasePage {
 
     public void selectBookingStatus() {
 
-        dropdownUtils.selectByVisibleText(bookingStatus, "Submitted to CRM");
+        dropdownUtils.selectByVisibleText(bookingStatus, "Approved");
     }
 }
