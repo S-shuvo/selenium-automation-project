@@ -27,5 +27,14 @@ public class ExportOperationPage extends BasePage {
         System.out.println("Opening Export Booking page...");
     }
 
+    //Create Shipping Order SubMenu
+    private By shippingOrderMenu = By.xpath("//a[text()='Create Shipping Order");
+
+    public void openShippingOrder(){
+
+        //Click Create Shipping Order
+        wait.until(ExpectedConditions.elementToBeClickable(shippingOrderMenu)).click();
+        System.out.println("Opening Shipping Order page...");
+    }
 
 }

@@ -345,7 +345,11 @@ public class ExportBookingPage extends BasePage {
     // BASIC INFORMATION
     // ---------------------------------------------------------
 
+    private String selectedTransportMode;
+
     public void selectTransportMode(String mode) {
+
+        this.selectedTransportMode = mode;
 
         Select select = new Select(
                 wait.until(
@@ -360,6 +364,11 @@ public class ExportBookingPage extends BasePage {
         System.out.println(
                 "Selected TransportMode : " + mode
         );
+
+
+    }
+    public String getSelectedTransportMode() {
+        return selectedTransportMode;
     }
 
 

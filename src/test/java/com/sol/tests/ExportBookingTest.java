@@ -1,5 +1,6 @@
 package com.sol.tests;
 
+import com.sol.pages.CreateShippingOrderPage;
 import com.sol.pages.ExportBookingDetailsPage;
 import com.sol.pages.ExportBookingPage;
 import com.sol.pages.ExportOperationPage;
@@ -7,8 +8,12 @@ import org.testng.annotations.Test;
 
 public class ExportBookingTest extends BaseTest {
 
+    private ExportBookingPage exportBookingPage;
+
     @Test
     public void createExportBooking() {
+
+        exportBookingPage = new ExportBookingPage(driver);
 
         // =====================================================
         // EXPORT OPERATION
@@ -24,16 +29,12 @@ public class ExportBookingTest extends BaseTest {
         // EXPORT BOOKING PAGE
         // =====================================================
 
-        ExportBookingPage exportBookingPage =
-                new ExportBookingPage(driver);
-
-
         // =====================================================
         // BASIC DETAILS (ExportBooking.java)
         // =====================================================
 
         // Transport Mode - test data
-        exportBookingPage.selectTransportMode("Sea-Air");
+        exportBookingPage.selectTransportMode("Air");
 
         // Key Account - random
         exportBookingPage.selectRandomKeyAccount();
@@ -157,9 +158,9 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.clickSave();
 
-// =====================================================
-// EXPORT BOOKING DETAILS / PO
-// =====================================================
+        // =====================================================
+        // EXPORT BOOKING DETAILS / PO
+        // =====================================================
 
         ExportBookingDetailsPage detailsPage =
                 new ExportBookingDetailsPage(driver);
@@ -184,7 +185,7 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterCarton("10");
 
-// যদি Package dropdown ব্যবহার করো
+//      For Package Dropdown
         detailsPage.selectPackageType("CARTON");
 
         detailsPage.enterPCS("100");
@@ -205,7 +206,7 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterHSCode("62034200");
 
-//        detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
+//      detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
 
         detailsPage.enterSerialNo("SN-001");
 
@@ -232,5 +233,28 @@ public class ExportBookingTest extends BaseTest {
 // =====================================================
 
         detailsPage.clickSave();
+        createShippingOrder();
+    }
+
+    public void createShippingOrder(){
+
+        // =====================================================
+        // CREATE SHIPPING ORDER PAGE
+        // =====================================================
+
+        String transportMode =
+                exportBookingPage.getSelectedTransportMode();
+
+        CreateShippingOrderPage shippingOrderPage =
+                new CreateShippingOrderPage(
+                        driver,
+                        transportMode
+                );
+
+        // ====================================================
+        // Basic Details
+        // ===================================================
+
+        shippingOrderPage.selectRandomCFS();
     }
 }
