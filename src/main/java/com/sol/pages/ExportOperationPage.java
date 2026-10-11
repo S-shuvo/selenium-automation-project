@@ -28,7 +28,7 @@ public class ExportOperationPage extends BasePage {
     }
 
     //Create Shipping Order SubMenu
-    private By shippingOrderMenu = By.xpath("//a[text()='Create Shipping Order");
+    private By shippingOrderMenu = By.xpath("//a[normalize-space()='Create Shipping Order']");
 
     public void openShippingOrder(){
 

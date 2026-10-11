@@ -6,9 +6,15 @@ import com.sol.pages.ExportBookingPage;
 import com.sol.pages.ExportOperationPage;
 import org.testng.annotations.Test;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ExportBookingTest extends BaseTest {
 
     private ExportBookingPage exportBookingPage;
+
+    // Store generated booking number
+    private String bookingNumber;
 
     @Test
     public void createExportBooking() {
@@ -29,27 +35,20 @@ public class ExportBookingTest extends BaseTest {
         // EXPORT BOOKING PAGE
         // =====================================================
 
-        // =====================================================
-        // BASIC DETAILS (ExportBooking.java)
-        // =====================================================
+        // BASIC DETAILS
 
-        // Transport Mode - test data
         exportBookingPage.selectTransportMode("Air");
 
-        // Key Account - random
         exportBookingPage.selectRandomKeyAccount();
 
-        // Freight Term - random
         exportBookingPage.selectRandomFreightTerm();
 
 
         // =====================================================
-        // SHIPPER (ExportBooking.java)
+        // SHIPPER
         // =====================================================
 
         exportBookingPage.selectRandomShipper();
-
-        // Shipper Address - auto populated
 
         exportBookingPage.enterShipperTitle();
 
@@ -59,20 +58,26 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.enterShipperBankAddress();
 
+
         // =====================================================
-        // CONSIGNEE (ExportBooking.java)
+        // CONSIGNEE
         // =====================================================
 
         exportBookingPage.selectRandomConsignee();
+
         exportBookingPage.enterConsigneeBankName();
+
         exportBookingPage.enterConsigneeBankAddress();
+
 
         // =====================================================
         // BUYING HOUSE
         // =====================================================
 
         exportBookingPage.selectRandomBuyingHouse();
+
         exportBookingPage.enterBuyingHouseTitle();
+
 
         // =====================================================
         // FIRST NOTIFY PARTY
@@ -80,13 +85,13 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.selectRandomFirstNotifyParty();
 
-        // First Notify Address - auto populated
 
         // =====================================================
         // SECOND NOTIFY PARTY
         // =====================================================
 
         exportBookingPage.enterSecondNotifyParty();
+
         exportBookingPage.enterSecondNotifyPartyAddress();
 
 
@@ -96,12 +101,15 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.selectRandomAgent();
 
+
         // =====================================================
         // CNF AGENT / COMMODITY
         // =====================================================
 
         exportBookingPage.selectRandomCnfAgent();
+
         exportBookingPage.selectRandomCommodityType();
+
 
         // =====================================================
         // COMMERCIAL INVOICE
@@ -109,48 +117,59 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.enterCommercialInvoiceNo();
 
+
         // =====================================================
         // AGREEMENT / EXP REF
         // =====================================================
 
         exportBookingPage.selectRandomAgreementType();
+
         exportBookingPage.enterExpRefNo();
+
 
         // =====================================================
         // ORIGIN
         // =====================================================
 
-        //exportBookingPage.selectRandomOriginCountry();
-
         exportBookingPage.selectOriginReceive();
-        //exportBookingPage.selectRandomOriginReceive();
-        //exportBookingPage.selectRandomLoadPort();
+
         exportBookingPage.selectLoadPort();
+
 
         // =====================================================
         // DESTINATION
         // =====================================================
 
         exportBookingPage.selectRandomDestCountry();
+
         exportBookingPage.selectRandomDestinationCity();
+
         exportBookingPage.selectRandomDischargePort();
+
         exportBookingPage.selectRandomFinalDestination();
+
 
         // =====================================================
         // GOODS DETAILS
         // =====================================================
 
         exportBookingPage.enterMarksAndNos();
+
         exportBookingPage.enterDescriptionOfGoods();
+
         exportBookingPage.enterRemarks();
+
         exportBookingPage.enterReferenceNo();
+
 
         // =====================================================
         // NRI
         // =====================================================
 
         exportBookingPage.selectRandomNri();
+
         exportBookingPage.enterNriCode();
+
 
         // =====================================================
         // SAVE EXPORT BOOKING
@@ -158,22 +177,43 @@ public class ExportBookingTest extends BaseTest {
 
         exportBookingPage.clickSave();
 
+
         // =====================================================
-        // EXPORT BOOKING DETAILS / PO
+        // EXPORT BOOKING DETAILS / BOOKING NUMBER
         // =====================================================
 
         ExportBookingDetailsPage detailsPage =
                 new ExportBookingDetailsPage(driver);
 
-        System.out.println(
-                "Booking Message: " +
-                        detailsPage.getBookingNumberMessage()
-        );
+        String bookingMessage =
+                detailsPage.getBookingNumberMessage();
+
+        System.out.println("Booking Message: " + bookingMessage);
+
+        // Extract and store only the booking number
+        Matcher matcher = Pattern
+                .compile("Booking No\\.\\s*:\\s*(\\S+)")
+                .matcher(bookingMessage);
+
+        if (matcher.find()) {
+
+            bookingNumber = matcher.group(1);
+
+            System.out.println(
+                    "Stored Booking Number: " + bookingNumber
+            );
+
+        } else {
+
+            throw new RuntimeException(
+                    "Booking number not found: " + bookingMessage
+            );
+        }
 
 
-// =====================================================
-// BOOKING DETAILS
-// =====================================================
+        // =====================================================
+        // BOOKING DETAILS
+        // =====================================================
 
         detailsPage.enterPO("PO-TEST-001");
 
@@ -185,7 +225,7 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterCarton("10");
 
-//      For Package Dropdown
+        // For Package Dropdown
         detailsPage.selectPackageType("CARTON");
 
         detailsPage.enterPCS("100");
@@ -206,7 +246,7 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterHSCode("62034200");
 
-//      detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
+        // detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
 
         detailsPage.enterSerialNo("SN-001");
 
@@ -219,24 +259,38 @@ public class ExportBookingTest extends BaseTest {
         detailsPage.enterCategory("TEST");
 
 
-// =====================================================
-// SELECT ROW & COPY
-// =====================================================
+        // =====================================================
+        // SELECT ROW & COPY
+        // =====================================================
 
         detailsPage.selectBookingRow();
+
         detailsPage.clickCopy();
+
         detailsPage.selectBookingStatus();
 
 
-// =====================================================
-// SAVE
-// =====================================================
+        // =====================================================
+        // SAVE
+        // =====================================================
 
         detailsPage.clickSave();
+
         createShippingOrder();
     }
 
-    public void createShippingOrder(){
+
+    public void createShippingOrder() {
+
+        // =====================================================
+        // EXPORT OPERATION
+        // =====================================================
+
+        ExportOperationPage operationPage =
+                new ExportOperationPage(driver);
+
+        operationPage.openShippingOrder();
+
 
         // =====================================================
         // CREATE SHIPPING ORDER PAGE
@@ -251,9 +305,19 @@ public class ExportBookingTest extends BaseTest {
                         transportMode
                 );
 
-        // ====================================================
-        // Basic Details
-        // ===================================================
+
+        // =====================================================
+        // SEARCH BOOKING & CREATE SO
+        // =====================================================
+
+        shippingOrderPage.searchBookingAndOpenCreateSO(
+                bookingNumber
+        );
+
+
+        // =====================================================
+        // BASIC DETAILS
+        // =====================================================
 
         shippingOrderPage.selectRandomCFS();
     }
