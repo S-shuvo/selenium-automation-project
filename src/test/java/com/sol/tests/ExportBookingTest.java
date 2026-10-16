@@ -275,7 +275,6 @@ public class ExportBookingTest extends BaseTest {
         // =====================================================
 
         detailsPage.clickSave();
-
         createShippingOrder();
     }
 

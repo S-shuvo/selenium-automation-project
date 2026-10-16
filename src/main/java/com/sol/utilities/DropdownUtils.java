@@ -53,18 +53,16 @@ public class DropdownUtils {
         );
     }
 
-
-    // =========================================================
-    // SELECT2 / AUTOCOMPLETE DROPDOWN
-    // =========================================================
+// =========================================================
+// SELECT2 / AUTOCOMPLETE DROPDOWN - OPTIMIZED
+// =========================================================
 
     public void selectRandomAutocomplete(
             By fieldLocator,
             By searchInputLocator,
             By optionsLocator
     ) {
-
-        // Open dropdown
+// Open dropdown
         WebElement field =
                 wait.until(
                         ExpectedConditions.elementToBeClickable(fieldLocator)
@@ -72,8 +70,7 @@ public class DropdownUtils {
 
         field.click();
 
-
-        // Search input
+// Search input
         WebElement searchInput =
                 wait.until(
                         ExpectedConditions.visibilityOfElementLocated(
@@ -81,80 +78,51 @@ public class DropdownUtils {
                         )
                 );
 
-        searchInput.clear();
-
-        // Search character
+// Search character
         searchInput.sendKeys("t");
 
-
-        // Confirm search text entered
-        wait.until(driver ->
-                "t".equalsIgnoreCase(
-                        searchInput.getAttribute("value")
-                )
-        );
-
-
-        // Wait for actual database result
-        wait.until(driver -> {
-
-            List<WebElement> options =
-                    driver.findElements(optionsLocator);
-
-            return options.stream()
-                    .anyMatch(option ->
-                            isValidOption(
-                                    option.getText().trim()
-                            )
-                    );
-        });
-
-
-        // Get actual valid options
+// Wait until actual valid results are available
         List<WebElement> validOptions =
-                driver.findElements(optionsLocator)
-                        .stream()
-                        .filter(option ->
-                                isValidOption(
-                                        option.getText().trim()
-                                )
-                        )
-                        .toList();
+                wait.until(driver -> {
 
+                    List<WebElement> options =
+                            driver.findElements(optionsLocator);
 
-        if (validOptions.isEmpty()) {
-            throw new RuntimeException(
-                    "No autocomplete data loaded from database!"
-            );
-        }
+                    List<WebElement> valid =
+                            options.stream()
+                                    .filter(WebElement::isDisplayed)
+                                    .filter(option ->
+                                            isValidOption(
+                                                    option.getText().trim()
+                                            )
+                                    )
+                                    .toList();
 
+                    return valid.isEmpty() ? null : valid;
+                });
 
-        // Random option
+// Random option
         int randomIndex =
                 random.nextInt(validOptions.size());
 
         WebElement selectedOption =
                 validOptions.get(randomIndex);
 
-
         System.out.println(
-                "Total Loaded Options : " +
-                        validOptions.size()
+                "Total Loaded Options : " + validOptions.size()
         );
 
         System.out.println(
-                "Selected Option : " +
-                        selectedOption.getText()
+                "Selected Option : " + selectedOption.getText()
         );
 
-
+// Select option
         selectedOption.click();
     }
 
-
-    // =========================================================
-    // AUTOCOMPLETE VALIDATION
-    // =========================================================
+// =========================================================
+// AUTOCOMPLETE VALIDATION
+// =========================================================
 
     private boolean isValidOption(String text) {
 
