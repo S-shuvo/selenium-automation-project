@@ -304,7 +304,6 @@ public class ExportBookingTest extends BaseTest {
                         transportMode
                 );
 
-
         // =====================================================
         // SEARCH BOOKING & CREATE SO
         // =====================================================
@@ -312,7 +311,6 @@ public class ExportBookingTest extends BaseTest {
         shippingOrderPage.searchBookingAndOpenCreateSO(
                 bookingNumber
         );
-
 
         // =====================================================
         // BASIC DETAILS

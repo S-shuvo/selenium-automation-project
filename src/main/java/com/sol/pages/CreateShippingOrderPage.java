@@ -48,6 +48,10 @@ public class CreateShippingOrderPage extends BasePage {
     private final By searchButton =
             By.id("btnSearchSo");
 
+    //SO Page Save Button
+    private final By shippingOrderButton =
+            By.cssSelector("input[value='Save']");
+
 // =========================================================
 // SEARCH BOOKING & OPEN CREATE SO
 // =========================================================
@@ -198,12 +202,19 @@ public class CreateShippingOrderPage extends BasePage {
             dropdownUtils.selectRandomAutocomplete(
                     cfsDropdown,
                     cfsSearchInput,
-                    cfsOptions
+                    cfsOptions,
+                    "t"
             );
 
             System.out.println(
                     "Transport Mode : " + transportMode
             );
         }
+
+        // Click Save
+        wait.until(
+                ExpectedConditions.elementToBeClickable(shippingOrderButton)
+        ).click();
+
     }
 }

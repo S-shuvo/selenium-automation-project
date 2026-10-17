@@ -45,45 +45,30 @@ public class ExportBookingPage extends BasePage {
             By.cssSelector("#select2-commodityTypeId-container");
 
     private final By commoditySearchInput =
-            By.cssSelector(
-                    ".select2-container--open .select2-search__field"
-            );
+            By.cssSelector(".select2-container--open .select2-search__field");
 
     private final By commodityOptions =
-            By.cssSelector(
-                    ".select2-container--open li.select2-results__option"
-            );
+            By.cssSelector(".select2-container--open li.select2-results__option");
 
     private final By commercialInvoiceNoField =
             By.xpath(
-                    "//input[contains(@name,'commercialInvoice') " +
-                            "or contains(@id,'commercialInvoice')]"
-            );
+                    "//input[contains(@name,'commercialInvoice') " + "or contains(@id,'commercialInvoice')]");
 
     private final By agreementTypeDropdown =
             By.xpath(
-                    "//select[contains(@name,'paymentMode.id') " +
-                            "or contains(@id,'paymentModeId')]"
-            );
+                    "//select[contains(@name,'paymentMode.id') " + "or contains(@id,'paymentModeId')]");
 
     private final By expRefNoField =
             By.xpath(
-                    "//input[contains(@name,'expNo') " +
-                            "or contains(@id,'expNo')]"
-            );
+                    "//input[contains(@name,'expNo') " + "or contains(@id,'expNo')]");
 
     private final By nriDropdown =
             By.xpath(
-                    "//select[contains(@name,'nonResident') " +
-                            "or contains(@id,'nonResidentId')]"
-            );
+                    "//select[contains(@name,'nonResident') " + "or contains(@id,'nonResidentId')]");
 
     private final By nriCodeField =
             By.xpath(
-                    "//input[contains(@name,'nonResidentName') " +
-                            "or contains(@id,'nonResidentName')]"
-            );
-
+                    "//input[contains(@name,'nonResidentName') " + "or contains(@id,'nonResidentName')]");
 
 
     // ---------------------------------------------------------
@@ -109,40 +94,22 @@ public class ExportBookingPage extends BasePage {
     // ---------------------------------------------------------
 
     private final By shipperField =
-            By.xpath(
-                    "//input[contains(@name,'shipper') " +
-                            "or contains(@id,'shipper')]"
-            );
+            By.xpath("//input[contains(@name,'shipper') " + "or contains(@id,'shipper')]");
 
     private final By shipperOptions =
-            By.xpath(
-                    "//ul[contains(@class,'ui-menu')]" +
-                            "//div[contains(@class,'ui-menu-item-wrapper')]"
-            );
+            By.xpath("//ul[contains(@class,'ui-menu')]" + "//div[contains(@class,'ui-menu-item-wrapper')]");
 
     private final By shipperTitleField =
-            By.xpath(
-                    "//input[contains(@name,'shipperTitle') " +
-                            "or contains(@id,'shipperTitle')]"
-            );
+            By.xpath("//input[contains(@name,'shipperTitle') " + "or contains(@id,'shipperTitle')]");
 
     private final By emailField =
-            By.xpath(
-                    "//input[@type='shipperEmail' " +
-                            "or contains(@name,'shipperEmail')]"
-            );
+            By.xpath("//input[@type='shipperEmail' " + "or contains(@name,'shipperEmail')]");
 
     private final By shipperBankNameField =
-            By.xpath(
-                    "//input[contains(@name,'shipperBankName') " +
-                            "or contains(@id,'shipperBankName')]"
-            );
+            By.xpath("//input[contains(@name,'shipperBankName') " + "or contains(@id,'shipperBankName')]");
 
     private final By shipperBankAddress =
-            By.xpath(
-                    "//textarea[contains(@name,'shipperBankAddress') " +
-                            "or contains(@id,'shipperBankAddress')]"
-            );
+            By.xpath("//textarea[contains(@name,'shipperBankAddress') " + "or contains(@id,'shipperBankAddress')]");
 
 
     // ---------------------------------------------------------
@@ -150,14 +117,10 @@ public class ExportBookingPage extends BasePage {
     // ---------------------------------------------------------
 
     private final By consigneeField =
-            By.xpath(
-                    "//input[contains(@name,'consignee') " +
-                            "or contains(@id,'consignee')]"
-            );
+            By.xpath("//input[contains(@name,'consignee') " + "or contains(@id,'consignee')]");
 
     private final By autocomplete =
-            By.xpath(
-                    "//ul[contains(@class,'ui-menu') " +
+            By.xpath("//ul[contains(@class,'ui-menu') " +
                             "and not(contains(@style, 'display: none'))]" +
                             "//div[contains(@class,'ui-menu-item-wrapper')]"
             );
@@ -367,15 +330,23 @@ public class ExportBookingPage extends BasePage {
 
 
     }
+
     public String getSelectedTransportMode() {
         return selectedTransportMode;
     }
 
 
-    public void selectRandomFreightTerm() {
+   /*    public void selectRandomFreightTerm() {
 
         dropdownUtils.selectRandomDropdown(
                 freightTermDropdown
+        );
+    }*/
+
+    public void selectRandomFreightTerm() {
+        dropdownUtils.selectByVisibleText(
+                freightTermDropdown,
+                "FOB"
         );
     }
 
@@ -393,8 +364,10 @@ public class ExportBookingPage extends BasePage {
         dropdownUtils.selectRandomAutocomplete(
                 commodityTypeField,
                 commoditySearchInput,
-                commodityOptions
+                commodityOptions,
+                "t"
         );
+
     }
 
 
@@ -430,8 +403,6 @@ public class ExportBookingPage extends BasePage {
 
         return result.toString();
     }
-
-
 
 
     public void selectRandomAgreementType() {
@@ -471,7 +442,8 @@ public class ExportBookingPage extends BasePage {
         dropdownUtils.selectRandomAutocomplete(
                 keyAccountField,
                 keyAccountSearchInput,
-                keyAccountOptions
+                keyAccountOptions,
+                "expo"
         );
     }
 
@@ -762,7 +734,8 @@ public class ExportBookingPage extends BasePage {
         dropdownUtils.selectRandomAutocomplete(
                 destCountryField,
                 destCountrySearchInput,
-                destCountryOptions
+                destCountryOptions,
+                "t"
         );
     }
 

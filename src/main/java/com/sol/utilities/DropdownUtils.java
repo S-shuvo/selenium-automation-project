@@ -60,7 +60,8 @@ public class DropdownUtils {
     public void selectRandomAutocomplete(
             By fieldLocator,
             By searchInputLocator,
-            By optionsLocator
+            By optionsLocator,
+            String searchText
     ) {
 // Open dropdown
         WebElement field =
@@ -79,7 +80,7 @@ public class DropdownUtils {
                 );
 
 // Search character
-        searchInput.sendKeys("t");
+        searchInput.sendKeys(searchText);
 
 // Wait until actual valid results are available
         List<WebElement> validOptions =
@@ -107,6 +108,8 @@ public class DropdownUtils {
 
         WebElement selectedOption =
                 validOptions.get(randomIndex);
+
+        System.out.println("Search Text:" + searchText);
 
         System.out.println(
                 "Total Loaded Options : " + validOptions.size()
@@ -153,4 +156,3 @@ public class DropdownUtils {
     }
 
 }
-
