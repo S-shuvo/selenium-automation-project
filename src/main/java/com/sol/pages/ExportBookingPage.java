@@ -373,7 +373,7 @@ public class ExportBookingPage extends BasePage {
 
     public void enterCommercialInvoiceNo() {
 
-        String invoiceNo = generateRandomLetters(6);
+        String invoiceNo = generateRandomLetters(5);
 
         driver.findElement(commercialInvoiceNoField)
                 .sendKeys(invoiceNo);
@@ -716,7 +716,7 @@ public class ExportBookingPage extends BasePage {
                 wait.until(
                         ExpectedConditions.elementToBeClickable(
                                 By.xpath(
-                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDBNP - BENAPOLE')]"
+                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDCGP - CHITTAGONG')]"
                                 )
                         )
                 );

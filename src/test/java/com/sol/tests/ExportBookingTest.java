@@ -37,7 +37,7 @@ public class ExportBookingTest extends BaseTest {
 
         // BASIC DETAILS
 
-        exportBookingPage.selectTransportMode("Air");
+        exportBookingPage.selectTransportMode("Ocean");
 
         exportBookingPage.selectRandomKeyAccount();
 
@@ -317,5 +317,14 @@ public class ExportBookingTest extends BaseTest {
         // =====================================================
 
         shippingOrderPage.selectRandomCFS();
+    }
+    public void cargoReceive() {
+        ExportOperationPage operationPage =
+                new ExportOperationPage(driver);
+
+        operationPage.openCargoReceive();
+
+
+
     }
 }

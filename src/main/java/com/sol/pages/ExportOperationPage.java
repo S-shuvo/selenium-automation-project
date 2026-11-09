@@ -27,7 +27,7 @@ public class ExportOperationPage extends BasePage {
         System.out.println("Opening Export Booking page...");
     }
 
-    //Create Shipping Order SubMenu
+    //Click Shipping Order SubMenu
     private By shippingOrderMenu = By.xpath("//a[normalize-space()='Create Shipping Order']");
 
     public void openShippingOrder(){
@@ -35,6 +35,15 @@ public class ExportOperationPage extends BasePage {
         //Click Create Shipping Order
         wait.until(ExpectedConditions.elementToBeClickable(shippingOrderMenu)).click();
         System.out.println("Opening Shipping Order page...");
+    }
+
+    //Click Cargo receive Submenu
+    private By cargoReceiveMenu =  By.xpath("//a[normalize-space()='Create Cargo']");
+    public void openCargoReceive(){
+
+        //Click Cargo Receive
+        wait.until(ExpectedConditions.elementToBeClickable(cargoReceiveMenu)).click();
+        System.out.println("Opening Cargo Receive module...");
     }
 
 }

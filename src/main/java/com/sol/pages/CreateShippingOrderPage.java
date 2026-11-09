@@ -1,12 +1,12 @@
 package com.sol.pages;
 
 import com.sol.utilities.DropdownUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class CreateShippingOrderPage extends BasePage {
@@ -120,101 +120,127 @@ public class CreateShippingOrderPage extends BasePage {
                                 "']]//select"
                 );
 
-// Wait for the current dropdown element
+// Wait for dropdown
         WebElement actionDropdown =
                 wait.until(
-                        ExpectedConditions.refreshed(
-                                ExpectedConditions.elementToBeClickable(
-                                        actionDropdownLocator
-                                )
+                        ExpectedConditions.elementToBeClickable(
+                                actionDropdownLocator
                         )
                 );
 
-// Select Create SO
-        Select actionSelect = new Select(actionDropdown);
+// First attempt: Select Create SO
 
-        actionSelect.selectByVisibleText("Create SO");
+        new Select(actionDropdown).selectByVisibleText("Create SO");
+        System.out.println("Create SO selected for booking: " + bookingNumber);
 
-        System.out.println(
-                "Create SO selected for booking: " + bookingNumber
+// Wait 5 seconds for Create SO form
+        try {
+
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(
+                            ExpectedConditions.visibilityOfElementLocated(cfsDropdown)
+                    );
+
+        } catch (TimeoutException e) {
+
+            System.out.println("Create SO page not opened. Trying again...");
+
+            // Second attempt: Find dropdown again
+            WebElement secondDropdown =
+                    wait.until(
+                            ExpectedConditions.elementToBeClickable(actionDropdownLocator)
+                    );
+
+            // Select Create SO again
+            new Select(secondDropdown).selectByVisibleText("Create SO");
+
+            System.out.println(
+                    "Second attempt: Create SO selected again for booking: "
+                            + bookingNumber
+            );
+        }
+
+// Final wait: Wait for CFS dropdown on Create SO form
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(cfsDropdown)
         );
-    }
 
+        System.out.println("Create Shipping Order form opened successfully.");
+
+    }
 // =========================================================
 // SELECT RANDOM CFS
 // =========================================================
 
-    public void selectRandomCFS() {
+        public void selectRandomCFS() {
 
-        List<WebElement> elements = driver.findElements(cfsDropdown);
+            List<WebElement> elements = driver.findElements(cfsDropdown);
 
-        System.out.println("CFS elements found: " + elements.size());
+            System.out.println("CFS elements found: " + elements.size());
 
-        for (WebElement element : elements) {
-            System.out.println("Displayed: " + element.isDisplayed());
-            System.out.println("Enabled: " + element.isEnabled());
-            System.out.println("HTML: " + element.getAttribute("outerHTML"));
-        }
+            for (WebElement element : elements) {
+                System.out.println("Displayed: " + element.isDisplayed());
+                System.out.println("Enabled: " + element.isEnabled());
+                System.out.println("HTML: " + element.getAttribute("outerHTML"));
+            }
 
-// If Transport Mode is Air, select CCL
-        if (transportMode != null &&
-                transportMode.equalsIgnoreCase("Air")) {
+            // If Transport Mode is Air, select CCL
+            if (transportMode != null &&
+                    transportMode.equalsIgnoreCase("Air")) {
 
-            // Open CFS dropdown
+                // Open CFS dropdown
+                wait.until(
+                        ExpectedConditions.elementToBeClickable(cfsDropdown)
+                ).click();
+
+                // Find Select2 search input
+                WebElement searchInput =
+                        wait.until(
+                                ExpectedConditions.visibilityOfElementLocated(
+                                        cfsSearchInput
+                                )
+                        );
+
+                // Search for CCL
+                searchInput.sendKeys("CCL");
+
+                // Find matching CCL option
+                By cclOption =
+                        By.xpath(
+                                "//li[contains(@class,'select2-results__option')" +
+                                        " and contains(normalize-space(.),'CCL')" +
+                                        " and not(contains(@class,'select2-results__message'))]"
+                        );
+
+                WebElement option =
+                        wait.until(
+                                ExpectedConditions.elementToBeClickable(
+                                        cclOption
+                                )
+                        );
+
+                option.click();
+
+                System.out.println("Transport Mode : Air");
+                System.out.println("Selected CFS : CCL");
+
+            } else {
+
+                // For other Transport Modes, select random CFS
+                dropdownUtils.selectRandomAutocomplete(
+                        cfsDropdown,
+                        cfsSearchInput,
+                        cfsOptions,
+                        "t"
+                );
+
+                System.out.println("Transport Mode : " + transportMode);
+            }
+
+            // Click Save
             wait.until(
-                    ExpectedConditions.elementToBeClickable(cfsDropdown)
+                    ExpectedConditions.elementToBeClickable(shippingOrderButton)
             ).click();
 
-            // Find Select2 search input
-            WebElement searchInput =
-                    wait.until(
-                            ExpectedConditions.visibilityOfElementLocated(
-                                    cfsSearchInput
-                            )
-                    );
-
-            // Search for CCL
-            searchInput.sendKeys("CCL");
-
-            // Find matching CCL option
-            By cclOption =
-                    By.xpath(
-                            "//li[contains(@class,'select2-results__option')" +
-                                    " and contains(normalize-space(.),'CCL')" +
-                                    " and not(contains(@class,'select2-results__message'))]"
-                    );
-
-            WebElement option =
-                    wait.until(
-                            ExpectedConditions.elementToBeClickable(
-                                    cclOption
-                            )
-                    );
-
-            option.click();
-
-            System.out.println("Transport Mode : Air");
-            System.out.println("Selected CFS : CCL");
-
-        } else {
-
-            // For other Transport Modes, select random CFS
-            dropdownUtils.selectRandomAutocomplete(
-                    cfsDropdown,
-                    cfsSearchInput,
-                    cfsOptions,
-                    "t"
-            );
-
-            System.out.println(
-                    "Transport Mode : " + transportMode
-            );
         }
-
-        // Click Save
-        wait.until(
-                ExpectedConditions.elementToBeClickable(shippingOrderButton)
-        ).click();
-
     }
-}
