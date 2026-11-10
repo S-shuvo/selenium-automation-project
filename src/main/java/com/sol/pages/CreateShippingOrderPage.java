@@ -4,19 +4,15 @@ import com.sol.utilities.DropdownUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-import java.util.List;
 
 public class CreateShippingOrderPage extends BasePage {
 
     private final DropdownUtils dropdownUtils;
     private final String transportMode;
 
-// =========================================================
-// CONSTRUCTOR
-// =========================================================
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
 
     public CreateShippingOrderPage(WebDriver driver, String transportMode) {
         super(driver);
@@ -25,11 +21,12 @@ public class CreateShippingOrderPage extends BasePage {
         this.transportMode = transportMode;
     }
 
-// =========================================================
-// LOCATORS
-// =========================================================
 
-// CFS SELECT2 AUTOCOMPLETE
+    // =========================================================
+    // LOCATORS
+    // =========================================================
+
+    // CFS SELECT2 AUTOCOMPLETE
 
     private final By cfsDropdown =
             By.cssSelector("#select2-cfsId-container");
@@ -38,23 +35,30 @@ public class CreateShippingOrderPage extends BasePage {
             By.cssSelector("input[role='searchbox']");
 
     private final By cfsOptions =
-            By.cssSelector("#select2-cfsId-result-e6wt-6669265");
+            By.cssSelector("#select2-cfsId-results li.select2-results__option");
+
 
     // Booking search field
+
     private final By bookingNoField =
             By.id("txtBookingNo");
 
+
     // Search button
+
     private final By searchButton =
             By.id("btnSearchSo");
 
-    //SO Page Save Button
+
+    // SO Page Save Button
+
     private final By shippingOrderButton =
             By.cssSelector("input[value='Save']");
 
-// =========================================================
-// SEARCH BOOKING & OPEN CREATE SO
-// =========================================================
+
+    // =========================================================
+    // SEARCH BOOKING & OPEN CREATE SO
+    // =========================================================
 
     public void searchBookingAndOpenCreateSO(String bookingNumber) {
 
@@ -65,6 +69,7 @@ public class CreateShippingOrderPage extends BasePage {
         }
 
         // Enter Booking Number
+
         WebElement bookingField =
                 wait.until(
                         ExpectedConditions.elementToBeClickable(
@@ -72,28 +77,19 @@ public class CreateShippingOrderPage extends BasePage {
                         )
                 );
 
-        System.out.println(
-                "Displayed: " + bookingField.isDisplayed()
-        );
-
-        System.out.println(
-                "Enabled: " + bookingField.isEnabled()
-        );
-
-        System.out.println(
-                "Readonly: " +
-                        bookingField.getAttribute("readonly")
-        );
-
         bookingField.clear();
         bookingField.sendKeys(bookingNumber);
 
+
         // Click Search
+
         wait.until(
                 ExpectedConditions.elementToBeClickable(searchButton)
         ).click();
 
-// Wait for the exact booking row to appear
+
+        // Wait for the exact booking row to appear
+
         By bookingRow =
                 By.xpath(
                         "//table//tbody/tr[.//td[normalize-space()='" +
@@ -101,18 +97,19 @@ public class CreateShippingOrderPage extends BasePage {
                                 "']]"
                 );
 
-        WebElement resultRow =
-                wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(
-                                bookingRow
-                        )
-                );
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        bookingRow
+                )
+        );
 
         System.out.println(
                 "Booking found: " + bookingNumber
         );
 
-// Find Action dropdown in the matching row
+
+        // Find Action dropdown in the matching row
+
         By actionDropdownLocator =
                 By.xpath(
                         "//table//tbody/tr[.//td[normalize-space()='" +
@@ -120,7 +117,9 @@ public class CreateShippingOrderPage extends BasePage {
                                 "']]//select"
                 );
 
-// Wait for dropdown
+
+        // First attempt: Select Create SO
+
         WebElement actionDropdown =
                 wait.until(
                         ExpectedConditions.elementToBeClickable(
@@ -128,119 +127,145 @@ public class CreateShippingOrderPage extends BasePage {
                         )
                 );
 
-// First attempt: Select Create SO
-
         new Select(actionDropdown).selectByVisibleText("Create SO");
-        System.out.println("Create SO selected for booking: " + bookingNumber);
 
-// Wait 5 seconds for Create SO form
+        System.out.println(
+                "Create SO selected for booking: " + bookingNumber
+        );
+
+
+        // Wait for Create SO form
+
         try {
 
-            new WebDriverWait(driver, Duration.ofSeconds(5))
-                    .until(
-                            ExpectedConditions.visibilityOfElementLocated(cfsDropdown)
-                    );
+            wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(
+                            cfsDropdown
+                    )
+            );
 
         } catch (TimeoutException e) {
 
-            System.out.println("Create SO page not opened. Trying again...");
+            System.out.println(
+                    "Create SO page not opened. Trying again..."
+            );
 
             // Second attempt: Find dropdown again
+
             WebElement secondDropdown =
                     wait.until(
-                            ExpectedConditions.elementToBeClickable(actionDropdownLocator)
+                            ExpectedConditions.elementToBeClickable(
+                                    actionDropdownLocator
+                            )
                     );
 
-            // Select Create SO again
-            new Select(secondDropdown).selectByVisibleText("Create SO");
+            // First click: Expand dropdown
+            secondDropdown.click();
+
+            // Second click: Collapse dropdown
+            secondDropdown.click();
 
             System.out.println(
-                    "Second attempt: Create SO selected again for booking: "
-                            + bookingNumber
+                    "Second attempt: Action dropdown expanded and collapsed."
+            );
+
+        }
+
+
+        // Final wait: Wait for CFS dropdown on Create SO form
+
+        wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        cfsDropdown
+                )
+        );
+
+        System.out.println(
+                "Create Shipping Order form opened successfully."
+        );
+
+    }
+
+
+    // =========================================================
+    // SELECT RANDOM CFS
+    // =========================================================
+
+    public void selectRandomCFS() {
+
+        // If Transport Mode is Air, select CCL
+
+        if (transportMode != null &&
+                transportMode.equalsIgnoreCase("Air")) {
+
+            // Open CFS dropdown
+
+            wait.until(
+                    ExpectedConditions.elementToBeClickable(
+                            cfsDropdown
+                    )
+            ).click();
+
+
+            // Find Select2 search input
+
+            WebElement searchInput =
+                    wait.until(
+                            ExpectedConditions.visibilityOfElementLocated(
+                                    cfsSearchInput
+                            )
+                    );
+
+
+            // Search for CCL
+
+            searchInput.sendKeys("CCL");
+
+
+            // Find matching CCL option
+
+            By cclOption =
+                    By.xpath(
+                            "//li[contains(@class,'select2-results__option')" +
+                                    " and contains(normalize-space(.),'CCL')" +
+                                    " and not(contains(@class,'select2-results__message'))]"
+                    );
+
+            wait.until(
+                    ExpectedConditions.elementToBeClickable(
+                            cclOption
+                    )
+            ).click();
+
+
+            System.out.println("Transport Mode : Air");
+            System.out.println("Selected CFS : CCL");
+
+        } else {
+
+            // For other Transport Modes, select random CFS
+
+            dropdownUtils.selectRandomAutocomplete(
+                    cfsDropdown,
+                    cfsSearchInput,
+                    cfsOptions,
+                    "t"
+            );
+
+            System.out.println(
+                    "Transport Mode : " + transportMode
             );
         }
 
-// Final wait: Wait for CFS dropdown on Create SO form
+
+        // Click Save
+
         wait.until(
-                ExpectedConditions.visibilityOfElementLocated(cfsDropdown)
-        );
-
-        System.out.println("Create Shipping Order form opened successfully.");
+                ExpectedConditions.elementToBeClickable(
+                        shippingOrderButton
+                )
+        ).click();
 
     }
-// =========================================================
-// SELECT RANDOM CFS
-// =========================================================
 
-        public void selectRandomCFS() {
-
-            List<WebElement> elements = driver.findElements(cfsDropdown);
-
-            System.out.println("CFS elements found: " + elements.size());
-
-            for (WebElement element : elements) {
-                System.out.println("Displayed: " + element.isDisplayed());
-                System.out.println("Enabled: " + element.isEnabled());
-                System.out.println("HTML: " + element.getAttribute("outerHTML"));
-            }
-
-            // If Transport Mode is Air, select CCL
-            if (transportMode != null &&
-                    transportMode.equalsIgnoreCase("Air")) {
-
-                // Open CFS dropdown
-                wait.until(
-                        ExpectedConditions.elementToBeClickable(cfsDropdown)
-                ).click();
-
-                // Find Select2 search input
-                WebElement searchInput =
-                        wait.until(
-                                ExpectedConditions.visibilityOfElementLocated(
-                                        cfsSearchInput
-                                )
-                        );
-
-                // Search for CCL
-                searchInput.sendKeys("CCL");
-
-                // Find matching CCL option
-                By cclOption =
-                        By.xpath(
-                                "//li[contains(@class,'select2-results__option')" +
-                                        " and contains(normalize-space(.),'CCL')" +
-                                        " and not(contains(@class,'select2-results__message'))]"
-                        );
-
-                WebElement option =
-                        wait.until(
-                                ExpectedConditions.elementToBeClickable(
-                                        cclOption
-                                )
-                        );
-
-                option.click();
-
-                System.out.println("Transport Mode : Air");
-                System.out.println("Selected CFS : CCL");
-
-            } else {
-
-                // For other Transport Modes, select random CFS
-                dropdownUtils.selectRandomAutocomplete(
-                        cfsDropdown,
-                        cfsSearchInput,
-                        cfsOptions,
-                        "t"
-                );
-
-                System.out.println("Transport Mode : " + transportMode);
-            }
-
-            // Click Save
-            wait.until(
-                    ExpectedConditions.elementToBeClickable(shippingOrderButton)
-            ).click();
-
-        }
-    }
+}

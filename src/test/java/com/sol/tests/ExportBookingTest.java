@@ -37,7 +37,7 @@ public class ExportBookingTest extends BaseTest {
 
         // BASIC DETAILS
 
-        exportBookingPage.selectTransportMode("Ocean");
+        exportBookingPage.selectTransportMode("Air");
 
         exportBookingPage.selectRandomKeyAccount();
 

@@ -716,7 +716,12 @@ public class ExportBookingPage extends BasePage {
                 wait.until(
                         ExpectedConditions.elementToBeClickable(
                                 By.xpath(
-                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDCGP - CHITTAGONG')]"
+                                        //For Air
+                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDBNP - BENAPOLE')]"
+
+                                        //For Ocean
+                                       // "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDCGP - CHITTAGONG')]"
+
                                 )
                         )
                 );
