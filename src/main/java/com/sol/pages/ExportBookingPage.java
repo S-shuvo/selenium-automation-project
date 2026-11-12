@@ -717,10 +717,10 @@ public class ExportBookingPage extends BasePage {
                         ExpectedConditions.elementToBeClickable(
                                 By.xpath(
                                         //For Air
-                                        "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDBNP - BENAPOLE')]"
+                                        //"//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDBNP - BENAPOLE')]"
 
                                         //For Ocean
-                                       // "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDCGP - CHITTAGONG')]"
+                                       "//ul[contains(@class,'ui-menu')]//div[contains(@class,'ui-menu-item-wrapper') and contains(normalize-space(),'BDCGP - CHITTAGONG')]"
 
                                 )
                         )

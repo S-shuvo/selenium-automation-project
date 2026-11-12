@@ -39,6 +39,7 @@ public class ExportOperationPage extends BasePage {
 
     //Click Cargo receive Submenu
     private By cargoReceiveMenu =  By.xpath("//a[normalize-space()='Create Cargo']");
+
     public void openCargoReceive(){
 
         //Click Cargo Receive
