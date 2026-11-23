@@ -1,20 +1,16 @@
 package com.sol.tests;
-
-import com.sol.pages.CreateShippingOrderPage;
 import com.sol.pages.ExportBookingDetailsPage;
 import com.sol.pages.ExportBookingPage;
 import com.sol.pages.ExportOperationPage;
+import com.sol.utilities.ConfigReader;
 import org.testng.annotations.Test;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ExportBookingTest extends BaseTest {
 
     private ExportBookingPage exportBookingPage;
 
-    // Store generated booking number
     private String bookingNumber;
+    private String transportMode;
 
     @Test
     public void createExportBooking() {
@@ -42,6 +38,12 @@ public class ExportBookingTest extends BaseTest {
         exportBookingPage.selectRandomKeyAccount();
 
         exportBookingPage.selectRandomFreightTerm();
+
+
+        // Store Transport Mode
+
+        transportMode =
+                exportBookingPage.getSelectedTransportMode();
 
 
         // =====================================================
@@ -188,27 +190,17 @@ public class ExportBookingTest extends BaseTest {
         String bookingMessage =
                 detailsPage.getBookingNumberMessage();
 
-        System.out.println("Booking Message: " + bookingMessage);
+        System.out.println(
+                "Booking Message: " + bookingMessage
+        );
 
-        // Extract and store only the booking number
-        Matcher matcher = Pattern
-                .compile("Booking No\\.\\s*:\\s*(\\S+)")
-                .matcher(bookingMessage);
+        // Extract Booking Number
 
-        if (matcher.find()) {
+        bookingNumber = detailsPage.getBookingNumber();
 
-            bookingNumber = matcher.group(1);
-
-            System.out.println(
-                    "Stored Booking Number: " + bookingNumber
-            );
-
-        } else {
-
-            throw new RuntimeException(
-                    "Booking number not found: " + bookingMessage
-            );
-        }
+        System.out.println(
+                "Generated Booking Number: " + bookingNumber
+        );
 
 
         // =====================================================
@@ -225,7 +217,6 @@ public class ExportBookingTest extends BaseTest {
 
         detailsPage.enterCarton("10");
 
-        // For Package Dropdown
         detailsPage.selectPackageType("CARTON");
 
         detailsPage.enterPCS("100");
@@ -245,8 +236,6 @@ public class ExportBookingTest extends BaseTest {
         detailsPage.enterNetWt("95");
 
         detailsPage.enterHSCode("62034200");
-
-        // detailsPage.enterItemClrSkuSoLmpo("TEST-ITEM");
 
         detailsPage.enterSerialNo("SN-001");
 
@@ -271,67 +260,48 @@ public class ExportBookingTest extends BaseTest {
 
 
         // =====================================================
-        // SAVE
+        // SAVE BOOKING DETAILS
         // =====================================================
 
         detailsPage.clickSave();
-        createShippingOrder();
-    }
-
-
-    public void createShippingOrder() {
-
-        // =====================================================
-        // EXPORT OPERATION
-        // =====================================================
-
-        ExportOperationPage operationPage =
-                new ExportOperationPage(driver);
-
-        operationPage.openShippingOrder();
 
 
         // =====================================================
-        // CREATE SHIPPING ORDER PAGE
+        // SAVE BOOKING CONTEXT
         // =====================================================
 
-        String transportMode =
-                exportBookingPage.getSelectedTransportMode();
-
-        CreateShippingOrderPage shippingOrderPage =
-                new CreateShippingOrderPage(
-                        driver,
-                        transportMode
-                );
-
-        // =====================================================
-        // SEARCH BOOKING & CREATE SO
-        // =====================================================
-
-        shippingOrderPage.searchBookingAndOpenCreateSO(
-                bookingNumber
+        BookingContext.save(
+                serverName,
+                bookingNumber,
+                transportMode
         );
 
+
         // =====================================================
-        // BASIC DETAILS
+        // NEXT MODULE: SHIPPING ORDER
         // =====================================================
 
-        shippingOrderPage.selectRandomCFS();
+        if (Boolean.parseBoolean(
+                ConfigReader.get("workflow.shippingOrder")
+        )) {
+
+            System.out.println(
+                    "Starting Shipping Order Module..."
+            );
+
+            new ShippingOrderTest().execute(
+                    driver,
+                    serverName,
+                    bookingNumber,
+                    transportMode
+            );
+
+        } else {
+
+            System.out.println(
+                    "Shipping Order Module skipped."
+            );
+        }
     }
 
-        // =====================================================
-        // CARGO RECEIVE
-       // =====================================================
-
-    public void cargoReceive() {
-        ExportOperationPage operationPage =
-                new ExportOperationPage(driver);
-
-        operationPage.openCargoReceive();
-
-
-
-
-
-    }
 }

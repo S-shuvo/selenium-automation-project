@@ -12,6 +12,7 @@ import org.testng.annotations.Parameters;
 public class BaseTest {
 
     protected WebDriver driver;
+    protected String serverName;
 
     @BeforeMethod
     @Parameters({"server", "browser"})
@@ -20,24 +21,26 @@ public class BaseTest {
             @Optional("chrome") String browser
     ) {
 
-        // 1. Open browser
+        serverName = server;
+
+        // Open browser
         driver = BrowserFactory.createDriver(browser);
 
-        System.out.println("Server : " + server);
-        System.out.println("URL : " + ConfigReader.getServerUrl(server));
+        System.out.println("================================");
+        System.out.println("Server  : " + server);
+        System.out.println("Browser : " + browser);
+        System.out.println("URL     : " + ConfigReader.getServerUrl(server));
+        System.out.println("================================");
 
-        // 2. Open application login page
-        driver.get(
-                ConfigReader.getServerUrl(server)
+        // Open application
+        driver.get(ConfigReader.getServerUrl(server));
+
+        System.out.println(
+                "Application Title : " + driver.getTitle()
         );
 
-        System.out.println("Server : " + server);
-        System.out.println("Browser : " + browser);
-        System.out.println("Application Title : " + driver.getTitle());
-
-        // 3. Login
-        LoginPage loginPage =
-                new LoginPage(driver);
+        // Login
+        LoginPage loginPage = new LoginPage(driver);
 
         loginPage.login(
                 ConfigReader.getServerUsername(server),
@@ -47,11 +50,15 @@ public class BaseTest {
         System.out.println("Login successful.");
     }
 
-//    @AfterMethod
-//    public void tearDown() {
-//
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+
+        if (driver != null) {
+
+            driver.quit();
+            driver = null;
+
+            System.out.println("Browser closed.");
+        }
+    }
 }
