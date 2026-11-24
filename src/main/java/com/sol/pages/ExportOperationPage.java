@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ExportOperationPage extends BasePage {
+public class ExportOperationPage extends com.sol.pages.BasePage {
 
     public ExportOperationPage(WebDriver driver){
         super(driver);

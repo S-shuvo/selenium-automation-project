@@ -1,5 +1,6 @@
 package com.sol.pages;
 
+import com.sol.pages.BasePage;
 import com.sol.utilities.DropdownUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;

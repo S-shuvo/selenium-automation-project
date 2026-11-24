@@ -6,43 +6,52 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 public class ShippingOrderTest extends BaseTest {
-    // =====================================================
-// STANDALONE EXECUTION
+// =====================================================
+// MAIN TEST EXECUTION
 // =====================================================
 
     @Test
     public void createShippingOrderTest() {
 
+        System.out.println("================================");
+        System.out.println("STARTING COMPLETE WORKFLOW");
+        System.out.println("================================");
+
+
+        // =====================================================
+        // STEP 1: EXPORT BOOKING
+        // =====================================================
+
+        System.out.println(
+                "Starting Export Booking Module..."
+        );
+
+        ExportBookingTest exportBookingTest =
+                new ExportBookingTest();
+
         String bookingNumber =
-                ConfigReader.get("booking.number");
+                exportBookingTest.createExportBookingWorkflow(
+                        driver,
+                        serverName
+                );
 
-        String transportMode;
 
-        // Manual Booking Number
-        if (bookingNumber != null &&
-                !bookingNumber.isBlank()) {
+        // Retrieve Transport Mode
 
-            transportMode =
-                    ConfigReader.get("booking.transportMode");
+        String transportMode =
+                BookingContext.getTransportMode(serverName);
 
-            System.out.println(
-                    "Using Manual Booking Number: " + bookingNumber
-            );
 
-        } else {
+        System.out.println("================================");
+        System.out.println("EXPORT BOOKING COMPLETED");
+        System.out.println("Booking Number : " + bookingNumber);
+        System.out.println("Transport Mode : " + transportMode);
+        System.out.println("================================");
 
-            // Load Latest Saved Booking Context
 
-            bookingNumber =
-                    BookingContext.getBookingNumber(serverName);
-
-            transportMode =
-                    BookingContext.getTransportMode(serverName);
-
-            System.out.println(
-                    "Using Saved Booking Number: " + bookingNumber
-            );
-        }
+        // =====================================================
+        // STEP 2: SHIPPING ORDER
+        // =====================================================
 
         execute(
                 driver,
@@ -162,6 +171,11 @@ public class ShippingOrderTest extends BaseTest {
                     "Cargo Receive Module skipped."
             );
         }
+
+
+        System.out.println("================================");
+        System.out.println("COMPLETE WORKFLOW FINISHED");
+        System.out.println("================================");
     }
 
 }

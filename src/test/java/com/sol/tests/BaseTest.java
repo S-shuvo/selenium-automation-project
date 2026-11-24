@@ -50,15 +50,15 @@ public class BaseTest {
         System.out.println("Login successful.");
     }
 
-    @AfterMethod(alwaysRun = true)
-    public void tearDown() {
-
-        if (driver != null) {
-
-            driver.quit();
-            driver = null;
-
-            System.out.println("Browser closed.");
-        }
-    }
+//    @AfterMethod(alwaysRun = true)
+//    public void tearDown() {
+//
+//        if (driver != null) {
+//
+//            driver.quit();
+//            driver = null;
+//
+//            System.out.println("Browser closed.");
+//        }
+//    }
 }

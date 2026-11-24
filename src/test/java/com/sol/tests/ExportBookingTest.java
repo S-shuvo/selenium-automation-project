@@ -3,19 +3,48 @@ import com.sol.pages.ExportBookingDetailsPage;
 import com.sol.pages.ExportBookingPage;
 import com.sol.pages.ExportOperationPage;
 import com.sol.utilities.ConfigReader;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 public class ExportBookingTest extends BaseTest {
 
     private ExportBookingPage exportBookingPage;
-
     private String bookingNumber;
     private String transportMode;
+
+
+// =====================================================
+// STANDALONE EXECUTION
+// =====================================================
 
     @Test
     public void createExportBooking() {
 
+        createExportBookingWorkflow(
+                driver,
+                serverName
+        );
+    }
+
+
+// =====================================================
+// REUSABLE EXPORT BOOKING EXECUTION
+// =====================================================
+
+    public String createExportBookingWorkflow(
+            WebDriver driver,
+            String server
+    ) {
+
+        if (driver == null) {
+
+            throw new IllegalArgumentException(
+                    "WebDriver is null."
+            );
+        }
+
         exportBookingPage = new ExportBookingPage(driver);
+
 
         // =====================================================
         // EXPORT OPERATION
@@ -33,7 +62,7 @@ public class ExportBookingTest extends BaseTest {
 
         // BASIC DETAILS
 
-        exportBookingPage.selectTransportMode("Ocean");
+        exportBookingPage.selectTransportMode("Air");
 
         exportBookingPage.selectRandomKeyAccount();
 
@@ -271,37 +300,23 @@ public class ExportBookingTest extends BaseTest {
         // =====================================================
 
         BookingContext.save(
-                serverName,
+                server,
                 bookingNumber,
                 transportMode
         );
 
 
-        // =====================================================
-        // NEXT MODULE: SHIPPING ORDER
-        // =====================================================
+        System.out.println("================================");
+        System.out.println("EXPORT BOOKING COMPLETED");
+        System.out.println("Server         : " + server);
+        System.out.println("Booking Number : " + bookingNumber);
+        System.out.println("Transport Mode : " + transportMode);
+        System.out.println("================================");
 
-        if (Boolean.parseBoolean(
-                ConfigReader.get("workflow.shippingOrder")
-        )) {
 
-            System.out.println(
-                    "Starting Shipping Order Module..."
-            );
+        // Return Booking Number for Next Module
 
-            new ShippingOrderTest().execute(
-                    driver,
-                    serverName,
-                    bookingNumber,
-                    transportMode
-            );
-
-        } else {
-
-            System.out.println(
-                    "Shipping Order Module skipped."
-            );
-        }
+        return bookingNumber;
     }
 
 }
